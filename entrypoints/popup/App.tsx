@@ -1,35 +1,41 @@
-import { useState } from 'react';
-import reactLogo from '@/assets/react.svg';
-import wxtLogo from '/wxt.svg';
+import {useState} from 'react';
 import './App.css';
+import {List, Switch} from "antd";
+import {getBackgroundService} from "@/lib/rpc/bg_service";
 
 function App() {
-  const [count, setCount] = useState(0);
+    const [data, setData] = useState([]);
 
-  return (
-    <>
-      <div>
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} className="logo" alt="WXT logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>WXT + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the WXT and React logos to learn more
-      </p>
-    </>
-  );
+    const backgroundService = getBackgroundService()
+
+    function getAll() {
+        return backgroundService.getAllUserScripts().then(res => {
+            // console.log("res", res)
+            setData(res);
+        })
+    }
+
+    async function handleTrigger(item) {
+        await backgroundService.setUserScriptEnabled(item.id, !item.enabled)
+        await getAll()
+    }
+
+    return (
+        <>
+            <List
+                size="small"
+                bordered
+                dataSource={data}
+                renderItem={
+                    (item) => (
+                        <List.Item className="">
+                            <Switch checked={item.enabled} onClick={() => handleTrigger(item)}></Switch>
+                            {item.name}
+                        </List.Item>
+                    )}
+            />
+        </>
+    );
 }
 
 export default App;
