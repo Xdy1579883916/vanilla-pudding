@@ -100,11 +100,15 @@ export default defineBackground(() => {
             }
         }
         registerBackgroundService()
-        await configureCSP()
-        await unregisterAllUserScripts()
-        const enabledScripts = await backgroundService.getAllEnabledUserScripts()
-        for (const userScript of enabledScripts) {
-            await registerUserScript(userScript)
+        try {
+            await configureCSP()
+            await unregisterAllUserScripts()
+            const enabledScripts = await backgroundService.getAllEnabledUserScripts()
+            for (const userScript of enabledScripts) {
+                await registerUserScript(userScript)
+            }
+        } catch (e) {
+            // 浏览器没有开启开发者模式
         }
     })
 });

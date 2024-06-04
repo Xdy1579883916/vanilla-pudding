@@ -1,8 +1,13 @@
 import {defineConfig} from 'wxt';
-import react from '@vitejs/plugin-react';
+import vue from '@vitejs/plugin-vue';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+    imports: {
+        addons: {
+            vueTemplate: true,
+        },
+    },
     experimental: {
         includeBrowserPolyfill: true,
     },
@@ -14,24 +19,18 @@ export default defineConfig({
         description: "香草布丁（vanillaJs补丁）是一个用户脚本管理器",
         minimum_chrome_version: "120",
         permissions: [
-            "webRequest",
-            "activeTab",
-            "background",
-            "declarativeNetRequest",
-            "declarativeNetRequestFeedback",
-            "cookies",
-            "downloads",
             "storage",
-            "unlimitedStorage",
             "userScripts",
         ],
         host_permissions: [
             "<all_urls>"
-        ]
+        ],
     },
     vite: () => ({
-        plugins: [
-            react()
-        ],
+        plugins: [vue()],
+        build: {
+            // Enabling sourcemaps with Vue during development is known to cause problems with Vue
+            sourcemap: false,
+        },
     }),
 });
