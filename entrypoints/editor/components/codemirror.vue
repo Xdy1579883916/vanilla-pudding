@@ -35,8 +35,6 @@ onMounted(async () => {
   let code = `// @name new-script
 // @match <all_urls>
 // @runAt document_idle
-
-// run-at 有如下: "document_start" | "document_end" | "document_idle"
 console.log(1);
 `
   const info = await backgroundService.getUserScript(id)
