@@ -12,7 +12,7 @@
           size="small"
           clearable
       />
-      <div class="max-h-[200px] overflow-auto border-t">
+      <div class="max-h-[320px] overflow-auto border-t">
         <div
             v-for="(item, index) in showList"
             :key="index"
