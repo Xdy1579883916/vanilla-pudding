@@ -3,6 +3,8 @@
     <div class="flex space-x-2">
       <n-button size="small" @click="handleNewScript">新增</n-button>
       <n-button size="small" :loading="upLoaded" @click="handleUpdate()">更新</n-button>
+      <n-button size="small" @click="handleExport()">导出</n-button>
+      <n-button size="small" @click="handleImport()">导入</n-button>
     </div>
     <div class="flex flex-col space-y-2">
       <n-input
@@ -54,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import {NButton, NIcon, NInput, NSwitch, NEllipsis, useMessage, useModal} from "naive-ui";
+import {NButton, NEllipsis, NIcon, NInput, NSwitch, useMessage, useModal} from "naive-ui";
 import {getBackgroundService} from "@/lib/rpc/bg_service.ts";
 import {computed, onMounted, ref} from "vue";
 import {Delete16Regular} from "@vicons/fluent"
@@ -139,6 +141,74 @@ async function handleUpdate() {
     message.error(e.message)
   } finally {
     upLoaded.value = false
+  }
+}
+
+async function handleExport() {
+  try {
+    await query()
+    console.log(list.value);
+    downloadJsonFile(list.value, `香草布丁用户脚本导出-${Date.now()}.json`)
+  } catch (e) {
+    message.error(e.message)
+  }
+}
+
+function downloadJsonFile(jsonObject, fileName) {
+  const jsonString = JSON.stringify(jsonObject, null, 2);
+  const blob = new Blob([jsonString], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function readJsonFile(callback) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json';
+  input.style.display = 'none';
+  document.body.appendChild(input);
+  input.addEventListener('change', function (event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e: any) {
+        try {
+          const jsonObject = JSON.parse(e.target.result);
+          callback(jsonObject);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
+      };
+      reader.readAsText(file);
+    }
+    document.body.removeChild(input);
+  });
+  input.click();
+}
+
+async function handleImport() {
+  try {
+    await query()
+    readJsonFile(async (scripts) => {
+      for (const script of scripts) {
+        const sc = list.value.find(v => v.name === script.name)
+        let id = sc?.id || null
+        if (!id) {
+          id = await backgroundService.generateUserScriptId()
+        }
+        await backgroundService.upgradeAndRegisterUserScript(id, script.code)
+      }
+      await query()
+    })
+  } catch (e) {
+    message.error(e.message)
   }
 }
 
