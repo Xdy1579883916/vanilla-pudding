@@ -75,7 +75,7 @@ console.log(1);
     message.success("已保存脚本更新~")
     // console.log("editor.value", editor)
     const val = editor.getValue()
-    backgroundService.upsertUserScript(id, val)
+    backgroundService.upgradeAndRegisterUserScript(id, val)
   })
 });
 

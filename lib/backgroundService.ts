@@ -59,6 +59,16 @@ export class BackgroundService extends ScriptDAO {
         return null;
     }
 
+    async upgradeAndRegisterUserScript(id, code) {
+        await this.upsertUserScript(id, code)
+        const userScript = await this.getUserScript(id);
+        if (userScript) {
+            await registerUserScript(userScript);
+            return true;
+        }
+        return false;
+    }
+
     async upgradeUserScriptToLatest(id) {
         const userScript = await this.getUserScript(id);
         if (userScript) {
