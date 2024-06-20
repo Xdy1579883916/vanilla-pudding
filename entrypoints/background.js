@@ -1,12 +1,17 @@
 import {registerBackgroundService} from "@/lib/rpc/bg_service";
 import {SessionStorage} from "@/lib/SessionStorage";
 import {configureCSP, registerUserScript, unregisterAllUserScripts} from "@/lib/user-script";
-import {BackgroundService} from "@/lib/backgroundService";
 
 export default defineBackground(() => {
-    console.log('Hello background!', {id: browser.runtime.id});
+    // 后台 worker 每5分钟就会休眠，所以定时唤醒一下
+    function keepServiceWorkerAlive() {
+        setInterval(async () => {
+            await browser.runtime.getPlatformInfo();
+        }, 4e3);
+    }
 
-    const backgroundService = new BackgroundService()
+    console.log('Hello background!', {id: browser.runtime.id});
+    const backgroundService = registerBackgroundService()
 
     self.backgroundService = backgroundService
     console.log("backgroundService", self)
@@ -99,8 +104,8 @@ export default defineBackground(() => {
                 break
             }
         }
-        registerBackgroundService()
         try {
+            keepServiceWorkerAlive()
             await configureCSP()
             await unregisterAllUserScripts()
             const enabledScripts = await backgroundService.getAllEnabledUserScripts()
