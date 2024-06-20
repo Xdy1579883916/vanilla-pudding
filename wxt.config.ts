@@ -29,6 +29,18 @@ export default defineConfig({
     vite: () => ({
         plugins: [vue()],
         build: {
+            modulePreload: {
+                polyfill: false,
+            },
+            minify: "terser",
+            terserOptions: {
+                compress: {
+                    drop_console: true,
+                    drop_debugger: true,
+                    pure_funcs: ["console.log"],
+                },
+            },
+            target: "esnext",
             // Enabling sourcemaps with Vue during development is known to cause problems with Vue
             sourcemap: false,
         },
