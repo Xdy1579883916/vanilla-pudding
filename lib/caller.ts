@@ -47,7 +47,6 @@ export async function caller(backgroundTool: any, action: BackgroundAction): Pro
         if (!callbackId || !funName) {
             throw new Error("不支持的脚本类型!")
         }
-        debugger
         const fun = getRow(backgroundTool, funName, null)
         if (!fun) {
             throw new Error("不支持的脚本类型!")
