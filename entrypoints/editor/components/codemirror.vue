@@ -11,10 +11,10 @@ import * as monaco from "monaco-editor";
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import {onMounted, ref} from "vue";
 import {useMessage} from "naive-ui";
-import {getBackgroundService} from "@/lib/rpc/bg_service.ts";
+import {getBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC.ts";
 
 const message = useMessage()
-const backgroundService  = getBackgroundService()
+const backgroundScriptService = getBackgroundScriptService()
 self.MonacoEnvironment = {
   getWorker() {
     return new tsWorker()
@@ -37,7 +37,7 @@ onMounted(async () => {
 // @runAt document_idle
 console.log(1);
 `
-  const info = await backgroundService.getUserScript(id)
+  const info = await backgroundScriptService.getUserScript(id)
   // 这是修改脚本
   if (info) {
     code = info.code
@@ -75,7 +75,7 @@ console.log(1);
     message.success("已保存脚本更新~")
     // console.log("editor.value", editor)
     const val = editor.getValue()
-    backgroundService.upgradeAndRegisterUserScript(id, val)
+    backgroundScriptService.upgradeAndRegisterUserScript(id, val)
   })
 });
 

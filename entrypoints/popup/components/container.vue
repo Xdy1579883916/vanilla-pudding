@@ -57,14 +57,14 @@
 
 <script setup lang="ts">
 import {NButton, NEllipsis, NIcon, NInput, NSwitch, useMessage, useModal} from "naive-ui";
-import {getBackgroundService} from "@/lib/rpc/bg_service.ts";
+import {getBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC.ts";
 import {computed, onMounted, ref} from "vue";
 import {Delete16Regular} from "@vicons/fluent"
 
 const message = useMessage()
 const modal = useModal()
 
-const backgroundService = getBackgroundService()
+const backgroundScriptService = getBackgroundScriptService()
 
 const list = ref([])
 const support = ref(false)
@@ -80,16 +80,16 @@ async function query() {
     message.error("请启用插件开发者模式")
     return
   }
-  list.value = await backgroundService.getAllUserScripts()
+  list.value = await backgroundScriptService.getAllUserScripts()
 }
 
 onMounted(async () => {
-  support.value = await backgroundService.isSupportAPI()
+  support.value = await backgroundScriptService.isSupportAPI()
   await query()
 })
 
 async function handleTriggerEnabled(item) {
-  await backgroundService.setUserScriptEnabled(item.id, !item.enabled);
+  await backgroundScriptService.setUserScriptEnabled(item.id, !item.enabled);
   await query()
 }
 
@@ -110,7 +110,7 @@ async function handleDel(item) {
   })
 
   async function doDel() {
-    await backgroundService.deleteUserScript(item.id);
+    await backgroundScriptService.deleteUserScript(item.id);
     await query()
     message.success("脚本已删除")
   }
@@ -121,7 +121,7 @@ function getEditorURL(userScriptId: string): string {
 }
 
 async function handleNewScript() {
-  const id = await backgroundService.generateUserScriptId()
+  const id = await backgroundScriptService.generateUserScriptId()
   handleEditScript(id)
 }
 
@@ -134,7 +134,7 @@ async function handleUpdate() {
     const ids = list.value.map(v => v.id)
 
     for (const id of ids) {
-      await backgroundService.upgradeUserScriptToLatest(id)
+      await backgroundScriptService.upgradeUserScriptToLatest(id)
     }
 
   } catch (e) {
@@ -201,9 +201,9 @@ async function handleImport() {
         const sc = list.value.find(v => v.name === script.name)
         let id = sc?.id || null
         if (!id) {
-          id = await backgroundService.generateUserScriptId()
+          id = await backgroundScriptService.generateUserScriptId()
         }
-        await backgroundService.upgradeAndRegisterUserScript(id, script.code)
+        await backgroundScriptService.upgradeAndRegisterUserScript(id, script.code)
       }
       await query()
     })

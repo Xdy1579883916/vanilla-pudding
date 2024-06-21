@@ -26,23 +26,36 @@ export default defineConfig({
             "<all_urls>"
         ],
     },
-    vite: () => ({
-        plugins: [vue()],
-        build: {
-            modulePreload: {
-                polyfill: false,
-            },
-            minify: "terser",
-            terserOptions: {
-                compress: {
-                    drop_console: true,
-                    drop_debugger: true,
-                    pure_funcs: ["console.log"],
+    vite: ({mode}) => {
+        const isDev = mode === "development";
+
+        function createMinifyOptions(): any {
+            if (!isDev) {
+                return {
+                    minify: "terser",
+                    terserOptions: {
+                        compress: {
+                            drop_console: true,
+                            drop_debugger: true,
+                            pure_funcs: ["console.log"],
+                        },
+                    },
+                }
+            }
+            return {}
+        }
+
+        return {
+            plugins: [vue()],
+            build: {
+                modulePreload: {
+                    polyfill: false,
                 },
+                ...createMinifyOptions(),
+                target: "esnext",
+                // Enabling sourcemaps with Vue during development is known to cause problems with Vue
+                sourcemap: false,
             },
-            target: "esnext",
-            // Enabling sourcemaps with Vue during development is known to cause problems with Vue
-            sourcemap: false,
-        },
-    }),
+        }
+    },
 });

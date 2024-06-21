@@ -18,9 +18,10 @@
     "@webext-core/proxy-service": "^1.2.0",
     "autoprefixer": "^10.4.19",
     "dexie": "^4.0.7",
-    "monaco-editor": "^0.49.0",
+    "monaco-editor": "^0.50.0",
     "naive-ui": "^2.38.2",
     "nanoid": "^5.0.7",
+    "vanilla-pudding-message": "^1.5.0",
     "vue": "^3.4.29"
   },
   "devDependencies": {
@@ -31,8 +32,8 @@
     "sass": "^1.77.6",
     "tailwindcss": "^3.4.4",
     "terser": "^5.31.1",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "vue-tsc": "^2.0.21",
-    "wxt": "^0.18.7"
+    "wxt": "^0.18.9"
   }
 }

@@ -1,9 +1,9 @@
 // @ts-nocheck
 import {ScriptDAO} from "@/lib/idb";
 import {registerUserScript, unregisterUserScript} from "@/lib/user-script";
-import {guid} from "@/util/guid";
+import {guid} from "@/util/guid.ts";
 
-export class BackgroundService extends ScriptDAO {
+export class BackgroundScriptService extends ScriptDAO {
     constructor() {
         super()
     }
