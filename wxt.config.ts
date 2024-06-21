@@ -1,5 +1,6 @@
-import {defineConfig} from 'wxt';
+import {defineConfig, WxtViteConfig} from 'wxt';
 import vue from '@vitejs/plugin-vue';
+import {UserConfig} from "vite";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -21,6 +22,14 @@ export default defineConfig({
         permissions: [
             "storage",
             "userScripts",
+            "webRequest",
+            "activeTab",
+            "background",
+            "declarativeNetRequest",
+            "declarativeNetRequestFeedback",
+            "cookies",
+            "downloads",
+            "unlimitedStorage"
         ],
         host_permissions: [
             "<all_urls>"
@@ -56,6 +65,6 @@ export default defineConfig({
                 // Enabling sourcemaps with Vue during development is known to cause problems with Vue
                 sourcemap: false,
             },
-        }
+        } as UserConfig as WxtViteConfig
     },
 });

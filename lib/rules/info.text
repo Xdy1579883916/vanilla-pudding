@@ -1,0 +1,9 @@
+await chrome.declarativeNetRequest.getDynamicRules(async (rules) => {
+  for (const r in rules) {
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: [rules[r].id],
+    });
+  }
+});
+
+await chrome.declarativeNetRequest.getDynamicRules()

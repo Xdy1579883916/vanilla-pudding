@@ -1,19 +1,26 @@
 import {createStorageIns} from "@/lib/storage";
+import {ruleDNRTool} from "@/lib/rules";
+import {extRequest} from "@/lib/request";
 
 export class BackgroundToolService {
     extSessionStore: any;
     extSyncStore: any;
     extLocalStore: any;
+    ruleDNRTool: any;
+    doRequest: any;
 
     constructor() {
         this.extSessionStore = createStorageIns("session");
         this.extSyncStore = createStorageIns("sync");
         this.extLocalStore = createStorageIns("local");
+        this.ruleDNRTool = ruleDNRTool
+        this.doRequest = extRequest
 
-        // Bind all methods to ensure `this` context is correct
+        // 绑定所有方法以确保 `this` 上下文正确
         this.bindMethods(this.extSessionStore);
         this.bindMethods(this.extSyncStore);
         this.bindMethods(this.extLocalStore);
+        this.bindMethods(this.ruleDNRTool);
     }
 
     private bindMethods(store: any) {

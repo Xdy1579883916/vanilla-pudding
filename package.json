@@ -16,11 +16,13 @@
   },
   "dependencies": {
     "@webext-core/proxy-service": "^1.2.0",
+    "alova": "^2.21.3",
     "autoprefixer": "^10.4.19",
     "dexie": "^4.0.7",
     "monaco-editor": "^0.50.0",
     "naive-ui": "^2.38.2",
     "nanoid": "^5.0.7",
+    "qs": "^6.12.1",
     "vanilla-pudding-message": "^1.5.0",
     "vue": "^3.4.29"
   },

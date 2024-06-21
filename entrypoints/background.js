@@ -1,4 +1,3 @@
-import {SessionStorage} from "@/lib/SessionStorage";
 import {configureCSP, registerUserScript, unregisterAllUserScripts} from "@/lib/user-script";
 import {registerBackgroundToolService} from "@/lib/rpc/backgroundToolRPC";
 import {registerBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC";
@@ -46,12 +45,13 @@ export default defineBackground(() => {
     }
 
     async function waitForLaunch() {
+        const sessionStore = backgroundToolService.extSessionStore
         const activeFlagKey = "__ActiveFlag__";
-        const storage = new SessionStorage();
-        if (await storage.getItem(activeFlagKey)) {
+        const isActive = await sessionStore.get(activeFlagKey)
+        if (isActive) {
             return {reason: LaunchReason.Activate};
         } else {
-            await storage.setItem(activeFlagKey, true);
+            await sessionStore.set(activeFlagKey, true)
             try {
                 const details = await Promise.race([
                     installDetailsPromise, // 在一般启动时, 该Promise永远不会完成,  他只在安装、更新时完成
