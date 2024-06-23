@@ -1,38 +1,45 @@
-import {createStorageIns} from "@/lib/storage";
+import {StorageInstance} from "@/lib/storage";
 import {ruleDNRTool} from "@/lib/rules";
 import {extRequest} from "@/lib/request";
+import {NamedStorageInstance} from "@/lib/storage/NamedStorage";
 
 export class BackgroundToolService {
     extSessionStore: any;
     extSyncStore: any;
     extLocalStore: any;
+    extNamedStore: any;
     ruleDNRTool: any;
     doRequest: any;
 
     constructor() {
-        this.extSessionStore = createStorageIns("session");
-        this.extSyncStore = createStorageIns("sync");
-        this.extLocalStore = createStorageIns("local");
+        // session sync local 存储库 API
+        this.extSessionStore = new StorageInstance("session");
+        this.extSyncStore = new StorageInstance("sync");
+        this.extLocalStore = new StorageInstance("local");
+
+        // 使用 IndexDB 实现, 类似local带命名空间隔离的 storage API
+        this.extNamedStore = new NamedStorageInstance()
+
+        // DNR API
         this.ruleDNRTool = ruleDNRTool
+
+        // 请求 API
         this.doRequest = extRequest
 
         // 绑定所有方法以确保 `this` 上下文正确
-        this.bindMethods(this.extSessionStore);
-        this.bindMethods(this.extSyncStore);
-        this.bindMethods(this.extLocalStore);
         this.bindMethods(this.ruleDNRTool);
     }
 
-    private bindMethods(store: any) {
-        for (const key of Object.keys(store)) {
-            if (typeof store[key] === 'function') {
-                store[key] = store[key].bind(store);
+    private bindMethods(objFun: any) {
+        for (const key of Object.keys(objFun)) {
+            if (typeof objFun[key] === 'function') {
+                objFun[key] = objFun[key].bind(objFun);
             }
         }
     }
 
-    hello() {
-        return "hi this is BackgroundToolService";
+    hello(msg?: string) {
+        return `hi, this your msg: [${msg || 'null'}]`;
     }
 
     // 下载文件
