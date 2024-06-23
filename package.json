@@ -12,6 +12,7 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
+    "gen-types": "tsc -p tsconfig-types.json",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
@@ -24,7 +25,7 @@
     "nanoid": "^5.0.7",
     "qs": "^6.12.1",
     "vanilla-pudding-message": "^1.5.0",
-    "vue": "^3.4.29"
+    "vue": "^3.4.30"
   },
   "devDependencies": {
     "@types/chrome": "latest",
@@ -35,7 +36,7 @@
     "tailwindcss": "^3.4.4",
     "terser": "^5.31.1",
     "typescript": "^5.5.2",
-    "vue-tsc": "^2.0.21",
+    "vue-tsc": "^2.0.22",
     "wxt": "^0.18.9"
   }
 }

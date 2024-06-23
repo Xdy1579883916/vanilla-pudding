@@ -38,43 +38,43 @@ export class BackgroundToolService {
         }
     }
 
-    hello(msg?: string) {
+    async hello(msg?: string) {
         return `hi, this your msg: [${msg || 'null'}]`;
     }
 
     // 下载文件
-    download(option: chrome.downloads.DownloadOptions) {
+    async download(option: chrome.downloads.DownloadOptions) {
         return chrome.downloads.download(option);
     }
 
     // cookie
-    cookieGet(option: chrome.cookies.Details) {
+    async cookieGet(option: chrome.cookies.Details) {
         return chrome.cookies.get(option);
     }
 
-    cookieGetAll(option: chrome.cookies.Details) {
+    async cookieGetAll(option: chrome.cookies.Details) {
         return chrome.cookies.getAll(option);
     }
 
-    cookieSet(option: chrome.cookies.Details) {
+    async cookieSet(option: chrome.cookies.Details) {
         return chrome.cookies.set(option);
     }
 
-    cookieRemove(option: chrome.cookies.Details) {
+    async cookieRemove(option: chrome.cookies.Details) {
         return chrome.cookies.remove(option);
     }
 
-    cookieGetAllStores() {
+    async cookieGetAllStores() {
         return chrome.cookies.getAllCookieStores();
     }
 
     // source
-    getURL(path: string) {
+    async getURL(path: string) {
         return chrome.runtime.getURL(path);
     }
 
     // tab 相关
-    tabsRemove(tabId: number) {
+    async tabsRemove(tabId: number) {
         return chrome.tabs.remove(tabId);
     }
 
@@ -82,15 +82,15 @@ export class BackgroundToolService {
         return chrome.tabs.query(queryInfo || {})
     }
 
-    tabsOpenPageByURL(url: string) {
+    async tabsOpenPageByURL(url: string) {
         return this.tabsCreate({url, active: true})
     }
 
-    tabsCreate(createProperties: chrome.tabs.CreateProperties) {
+    async tabsCreate(createProperties: chrome.tabs.CreateProperties) {
         return chrome.tabs.create(createProperties);
     }
 
-    tabsGetActive() {
+    async tabsGetActive() {
         return chrome.tabs.query({active: true});
     }
 
@@ -105,7 +105,7 @@ export class BackgroundToolService {
         return chrome.tabs.captureVisibleTab(id, opt);
     }
 
-    tabsUpdate(tabId: number, updateProperties: chrome.tabs.UpdateProperties) {
+    async tabsUpdate(tabId: number, updateProperties: chrome.tabs.UpdateProperties) {
         return chrome.tabs.update(tabId, updateProperties);
     }
 }
