@@ -74,17 +74,12 @@ export class BackgroundToolService {
     }
 
     // tab 相关
-    tabsRemoveById(tabId: number) {
+    tabsRemove(tabId: number) {
         return chrome.tabs.remove(tabId);
     }
 
-    async tabsRemoveByURL(url: string) {
-        const tabs = await chrome.tabs.query({url});
-        for (const tab of tabs) {
-            if (tab.url === url) {
-                await this.tabsRemoveById(tab.id);
-            }
-        }
+    async tabsQuery(queryInfo: chrome.tabs.QueryInfo) {
+        return chrome.tabs.query(queryInfo || {})
     }
 
     tabsOpenPageByURL(url: string) {
