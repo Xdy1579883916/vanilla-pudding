@@ -4,10 +4,10 @@ import {extRequest} from "@/lib/request";
 import {NamedStorageInstance} from "@/lib/storage/NamedStorage";
 
 export class BackgroundToolService {
-    extSessionStore: any;
-    extSyncStore: any;
-    extLocalStore: any;
-    extNamedStore: any;
+    extSessionStore: StorageInstance;
+    extSyncStore: StorageInstance;
+    extLocalStore: StorageInstance;
+    extNamedStore: NamedStorageInstance;
     ruleDNRTool: any;
     doRequest: any;
 
