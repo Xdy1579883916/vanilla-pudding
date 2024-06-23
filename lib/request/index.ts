@@ -1,11 +1,11 @@
-import {getRow, parseJson} from "@/lib/tool.ts";
+import {check, getRow, parseJson} from "@/lib/tool.ts";
 import {ruleDNRTool} from "@/lib/rules";
 import {createAlova, Method, MethodType, RequestBody} from 'alova';
 import GlobalFetch from 'alova/GlobalFetch';
+import {upperCase} from "lodash-es";
 
 
-// ResponseType
-export type ResponseType =
+type ResponseType =
     | "arraybuffer"
     | "blob"
     | "document"
@@ -17,10 +17,9 @@ export type ResponseType =
     | "charset_encode"
 
 
-export type ContentType = "json" | "form" | "formData"
+type ContentType = "json" | "form" | "formData"
 
-// ContentTypeMap
-export const ContentTypeMap: Record<ContentType, string> = {
+const ContentTypeMap: Record<ContentType, string> = {
     json: "application/json;charset=UTF-8",
     form: "application/x-www-form-urlencoded;charset=UTF-8",
     formData: "multipart/form-data",
@@ -106,11 +105,6 @@ const alovaInstance = createAlova({
     },
 });
 
-
-function check(data: any, type: string) {
-    return Object.prototype.toString.call(data) === `[object ${type}]`
-}
-
 async function doBlobFields(data: any) {
     if (!check(data, "Object")) {
         return
@@ -130,28 +124,28 @@ async function doBlobFields(data: any) {
     delete data.fileFields
 }
 
-export async function onBeforeSetCors(cors_value: string) {
+async function onBeforeSetCors(cors_value: string) {
     if (!cors_value)
         return
     const wde_cors = parseJson(cors_value)
     await ruleDNRTool.addByHeader(wde_cors)
 }
 
-export async function onEndSetCors(cors_value: string) {
+async function onEndSetCors(cors_value: string) {
     if (!cors_value)
         return
     const wde_cors = parseJson(cors_value)
     await ruleDNRTool.rmByHeader(wde_cors)
 }
 
-export interface TWdeCors {
+interface TWdeCors {
     originValue: string
     refererValue: string
     monitorUrl: string
     diyHeaders?: Array<any>
 }
 
-export function createWdeCors(opt: TWdeCors) {
+function createWdeCors(opt: TWdeCors) {
     return JSON.stringify(opt)
 }
 
@@ -161,7 +155,8 @@ export function extRequest(
     config?: {},
     data?: RequestBody
 ) {
-    return new Method(type, alovaInstance, url, config, data)
+    const method = upperCase(type) as MethodType
+    return new Method(method, alovaInstance, url, config, data)
 }
 
 function getContentType(response: Response) {

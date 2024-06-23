@@ -165,3 +165,7 @@ export function clone(...args) {
 export function parseToReg(pattern) {
     return new RegExp(pattern)
 }
+
+export function check(data: any, type: string) {
+    return Object.prototype.toString.call(data) === `[object ${type}]`
+}
