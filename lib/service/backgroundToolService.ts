@@ -28,10 +28,14 @@ export class BackgroundToolService {
 
         // 绑定所有方法以确保 `this` 上下文正确
         this.bindMethods(this.ruleDNRTool);
+        this.bindMethods(this.extNamedStore);
+        this.bindMethods(this.extSessionStore);
+        this.bindMethods(this.extSyncStore);
+        this.bindMethods(this.extLocalStore);
     }
 
     private bindMethods(objFun: any) {
-        for (const key of Object.keys(objFun)) {
+        for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(objFun))) {
             if (typeof objFun[key] === 'function') {
                 objFun[key] = objFun[key].bind(objFun);
             }
