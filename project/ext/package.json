@@ -5,6 +5,7 @@
   "version": "1.4.0",
   "type": "module",
   "scripts": {
+    "rm-all": "rimraf dist node_modules",
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
