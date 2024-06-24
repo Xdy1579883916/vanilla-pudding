@@ -1,0 +1,21 @@
+{
+  "name": "@vanilla-pudding/ext",
+  "description": "插件",
+  "private": true,
+  "version": "1.4.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "gen-types": "tsc -p tsconfig-types.json",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "@vanilla-pudding/message": "workspace:*"
+  }
+}

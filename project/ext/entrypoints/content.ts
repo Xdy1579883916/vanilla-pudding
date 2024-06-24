@@ -1,6 +1,6 @@
 import {getBackgroundToolService} from "@/lib/rpc/backgroundToolRPC.ts";
 import {caller} from "@/lib/caller.ts";
-import {emit, Event4ChromeKey, Event4PageKey, ExtManifestKey, listen} from "vanilla-pudding-message"
+import {emit, Event4ChromeKey, Event4PageKey, ExtManifestKey, listen} from "@vanilla-pudding/message"
 
 export default defineContentScript({
     matches: ['<all_urls>'],

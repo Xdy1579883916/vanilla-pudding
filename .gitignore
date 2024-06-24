@@ -1,30 +1,29 @@
-# Logs
-logs
-*.log
+# 修改文件内容后要清空git本地文件缓存:
+# git rm -r --cached .
+# git add .
+# git commit -m 'update .gitignore'
+# git pull
+# git push
+
+.DS_Store
+node_modules
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-.output
-.types
-stats.html
-stats-*.json
-.wxt
-web-ext.config.ts
 
 # Editor directories and files
+.idea
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-pnpm-lock.yaml
-
-
+# 解决vscode内的一些格式化配置问题
+!.vscode/settings.json
+# vue3的基础模板
+!.vscode/vue3.code-snippets

@@ -1,0 +1,32 @@
+{
+  "name": "@vanilla-pudding/message",
+  "description": "香草布丁-消息通信包",
+  "version": "1.0.0",
+  "type": "module",
+  "private": false,
+  "author": "deyu",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "prepublishOnly": "pnpm build",
+    "push": "npm publish"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {}
+}
