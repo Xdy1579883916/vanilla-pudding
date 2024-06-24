@@ -1,6 +1,5 @@
 {
-  "name": "@vanilla-pudding/userscript-test-message",
-  "description": "本地消息通信测试",
+  "name": "userscript-starter",
   "version": "1.0.0",
   "type": "module",
   "private": false,
@@ -28,6 +27,11 @@
     "dist"
   ],
   "dependencies": {
-    "@vanilla-pudding/message": "workspace:*"
+    "@vanilla-pudding/message": "^1.0.0"
+  },
+  "devDependencies": {
+    "alova": "^2.21.3",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.1"
   }
 }

@@ -1,0 +1,39 @@
+{
+  "name": "create-vpu",
+  "version": "1.1.0",
+  "description": "创建香草布丁用户脚本 create-vanilla-pudding-userscript",
+  "type": "module",
+  "scripts": {
+    "dev": "unbuild --stub",
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "push": "npm publish"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bin": {
+    "create-vpu": "index.js",
+    "cvpu": "index.js"
+  },
+  "files": [
+    "index.js",
+    "template-*",
+    "dist"
+  ],
+  "keywords": [],
+  "author": "xiadeyu",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/minimist": "^1.2.5",
+    "@types/prompts": "^2.4.9",
+    "cross-spawn": "^7.0.3",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2",
+    "unbuild": "^2.0.0"
+  }
+}
