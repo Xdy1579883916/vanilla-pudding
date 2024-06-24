@@ -5,7 +5,7 @@
 ## 快速开始
 
 ```bash
-npm create vpu
+npm create vpu@latest
 ```
 
 然后按照提示操作!
