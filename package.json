@@ -8,7 +8,6 @@
   "dependencies": {
     "@webext-core/proxy-service": "^1.2.0",
     "alova": "^2.21.3",
-    "autoprefixer": "^10.4.19",
     "dexie": "^4.0.7",
     "monaco-editor": "^0.50.0",
     "naive-ui": "^2.38.2",
@@ -17,10 +16,13 @@
     "vue": "^3.4.30"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.19",
     "@types/chrome": "latest",
     "@types/node": "latest",
     "@vicons/fluent": "^0.12.0",
     "@vitejs/plugin-vue": "^5.0.5",
+    "unplugin-auto-import": "^0.17.6",
+    "unplugin-vue-components": "^0.27.0",
     "postcss": "^8.4.38",
     "sass": "^1.77.6",
     "tailwindcss": "^3.4.4",

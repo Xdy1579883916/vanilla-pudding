@@ -8,29 +8,37 @@
     </div>
     <div class="flex flex-col space-y-2">
       <n-input
-          v-model:value="search"
-          type="text"
-          placeholder="筛选"
-          size="small"
-          clearable
+        v-model:value="search"
+        type="text"
+        placeholder="筛选"
+        size="small"
+        clearable
       />
       <div class="max-h-[320px] overflow-auto border-t">
+        <div v-if="!showList.length" class="flex justify-center items-center h-[300px]">
+          <n-empty description="你的脚本列表空空的">
+            <template #extra>
+              <n-button size="small" @click="handleNewScript">新增一个吧</n-button>
+            </template>
+          </n-empty>
+        </div>
         <div
-            v-for="(item, index) in showList"
-            :key="index"
-            class="flex justify-between items-center border-b border-gray-200 w-full p-1 text-xs"
+          v-else
+          v-for="(item, index) in showList"
+          :key="index"
+          class="flex justify-between items-center border-b border-gray-200 w-full p-1 text-xs"
         >
           <div class="space-x-3 flex justify-between items-center">
             <n-switch
-                size="small"
-                :value="item.enabled"
-                @update:value="handleTriggerEnabled(item)"
+              size="small"
+              :value="item.enabled"
+              @update:value="handleTriggerEnabled(item)"
             />
             <n-button
-                text
-                tag="div"
-                :title="item.name"
-                @click="handleEditScript(item.id)"
+              text
+              tag="div"
+              :title="item.name"
+              @click="handleEditScript(item.id)"
             >
               <n-ellipsis style="max-width: 200px" :tooltip="false">
                 {{ item.name }}
@@ -56,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import {NButton, NEllipsis, NIcon, NInput, NSwitch, useMessage, useModal} from "naive-ui";
+import {NButton, NEllipsis, NEmpty, NIcon, NInput, NSwitch, useMessage, useModal} from "naive-ui";
 import {getBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC.ts";
 import {computed, onMounted, ref} from "vue";
 import {Delete16Regular} from "@vicons/fluent"
