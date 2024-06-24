@@ -1,6 +1,6 @@
 import {check, getRow, parseJson} from "@/lib/tool.ts";
 import {ruleDNRTool} from "@/lib/rules";
-import {createAlova, Method, MethodType, RequestBody} from 'alova';
+import {AlovaMethodCreateConfig, createAlova, Method, MethodType, RequestBody} from 'alova';
 import GlobalFetch from 'alova/GlobalFetch';
 import {upperCase} from "lodash-es";
 
@@ -24,7 +24,7 @@ const ContentTypeMap: Record<ContentType, string> = {
     form: "application/x-www-form-urlencoded;charset=UTF-8",
     formData: "multipart/form-data",
 }
-
+type FetchRequestInit = Omit<RequestInit, 'body' | 'headers' | 'method'>;
 const alovaInstance = createAlova({
     requestAdapter: GlobalFetch(),
     timeout: 1000 * 60,
@@ -152,7 +152,7 @@ function createWdeCors(opt: TWdeCors) {
 export function extRequest(
     type: MethodType,
     url: string,
-    config?: {},
+    config?: AlovaMethodCreateConfig<unknown, unknown, FetchRequestInit, Headers>,
     data?: RequestBody
 ) {
     const method = upperCase(type) as MethodType

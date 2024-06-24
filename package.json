@@ -24,7 +24,7 @@
     "naive-ui": "^2.38.2",
     "nanoid": "^5.0.7",
     "qs": "^6.12.1",
-    "vanilla-pudding-message": "^1.5.0",
+    "vanilla-pudding-message": "^1.8.0",
     "vue": "^3.4.30"
   },
   "devDependencies": {

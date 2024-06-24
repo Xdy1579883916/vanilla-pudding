@@ -1,5 +1,5 @@
 import {StorageInstance} from "@/lib/storage";
-import {ruleDNRTool} from "@/lib/rules";
+import {RuleDNRTool} from "@/lib/rules";
 import {extRequest} from "@/lib/request";
 import {NamedStorageInstance} from "@/lib/storage/NamedStorage";
 
@@ -8,8 +8,9 @@ export class BackgroundToolService {
     extSyncStore: StorageInstance;
     extLocalStore: StorageInstance;
     extNamedStore: NamedStorageInstance;
-    ruleDNRTool: any;
-    doRequest: any;
+    ruleDNRTool: RuleDNRTool;
+    // 请求 API
+    doRequest = extRequest;
 
     constructor() {
         // session sync local 存储库 API
@@ -21,10 +22,8 @@ export class BackgroundToolService {
         this.extNamedStore = new NamedStorageInstance()
 
         // DNR API
-        this.ruleDNRTool = ruleDNRTool
+        this.ruleDNRTool = new RuleDNRTool()
 
-        // 请求 API
-        this.doRequest = extRequest
 
         // 绑定所有方法以确保 `this` 上下文正确
         this.bindMethods(this.ruleDNRTool);

@@ -62,31 +62,33 @@ interface TWdeCors {
     }[]
 }
 
-// DNR: declarativeNetRequest
-export const ruleDNRTool = {
-    async update(opt: any) {
-        await chrome.declarativeNetRequest.updateDynamicRules(opt)
-    },
-    async rm(ids: number[] | undefined) {
-        await chrome.declarativeNetRequest.updateDynamicRules({removeRuleIds: ids})
-    },
-    async clear() {
-        const rules = await chrome.declarativeNetRequest.getDynamicRules()
-        for (const r in rules) {
-            await chrome.declarativeNetRequest.updateDynamicRules({
-                removeRuleIds: [rules[r].id],
-            })
+export class RuleDNRTool {
+    async update(opt: any): Promise<void> {
+        await chrome.declarativeNetRequest.updateDynamicRules(opt);
+    }
+
+    async rm(ids: number[] | undefined): Promise<void> {
+        if (ids && ids.length > 0) {
+            await chrome.declarativeNetRequest.updateDynamicRules({removeRuleIds: ids});
         }
-    },
-    async get(id: number | undefined) {
-        const rules = await chrome.declarativeNetRequest.getDynamicRules()
-        return id ? rules.filter(v => v.id === id) : rules
-    },
-    async addByHeader(opt: TWdeCors) {
-        const {originValue, refererValue, monitorUrl, monitorDomain, diyHeaders} = opt
-        const {host} = parseURL(monitorUrl)
-        // 根据domain创建id, 因为插件的动态规则数量有限制
-        const id = parse2Hash(originValue)
+    }
+
+    async clear(): Promise<void> {
+        const rules = await chrome.declarativeNetRequest.getDynamicRules();
+        for (const rule of rules) {
+            await this.rm([rule.id]);
+        }
+    }
+
+    async get(id: number | undefined): Promise<any[]> {
+        const rules = await chrome.declarativeNetRequest.getDynamicRules();
+        return id !== undefined ? rules.filter(v => v.id === id) : rules;
+    }
+
+    async addByHeader(opt: TWdeCors): Promise<void> {
+        const {originValue, refererValue, monitorUrl, monitorDomain, diyHeaders} = opt;
+        const host = parseURL(monitorUrl).host;
+        const id = parse2Hash(originValue);
         const rule = {
             id,
             priority: 3,
@@ -103,16 +105,16 @@ export const ruleDNRTool = {
                 urlFilter: `*${host}*`,
                 resourceTypes: AllResourceType,
             },
-        }
-        return this.update({
-            addRules: [rule],
-            removeRuleIds: [id],
-        })
-    },
-    async rmByHeader(opt: TWdeCors) {
-        const {originValue, refererValue, monitorUrl, monitorDomain} = opt
-        // 根据domain创建id, 因为插件的动态规则数量有限制
-        const id = parse2Hash(originValue)
-        return this.rm([id])
-    },
+        };
+        await this.update({addRules: [rule], removeRuleIds: [id]});
+    }
+
+    async rmByHeader(opt: TWdeCors): Promise<void> {
+        const {originValue} = opt;
+        const id = parse2Hash(originValue);
+        await this.rm([id]);
+    }
 }
+
+// DNR: declarativeNetRequest
+export const ruleDNRTool = new RuleDNRTool()
