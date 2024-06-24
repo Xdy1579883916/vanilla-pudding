@@ -22,7 +22,6 @@ export default defineConfig({
         permissions: [
             "storage",
             "userScripts",
-            "webRequest",
             "activeTab",
             "background",
             "declarativeNetRequest",
