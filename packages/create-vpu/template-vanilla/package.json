@@ -30,6 +30,7 @@
     "@vanilla-pudding/message": "^1.0.0"
   },
   "devDependencies": {
+    "@types/chrome": "latest",
     "alova": "^2.21.3",
     "@vitejs/plugin-vue": "^5.0.5",
     "vite": "^5.3.1"
