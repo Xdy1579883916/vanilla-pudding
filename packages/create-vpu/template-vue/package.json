@@ -33,6 +33,7 @@
   "devDependencies": {
     "@types/chrome": "latest",
     "@vitejs/plugin-vue": "^5.0.5",
+    "@vanilla-pudding/vite-plugin": "^1.0.0",
     "alova": "^2.21.3",
     "vite": "^5.3.1"
   }

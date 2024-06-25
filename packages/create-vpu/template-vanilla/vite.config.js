@@ -1,5 +1,5 @@
 import {defineConfig} from 'vite'
-import {transformUserScriptPlugin} from "./vite-plugin/transformUserScriptPlugin.js";
+import {transformUserScript} from "@vanilla-pudding/vite-plugin";
 import pkg from "./package.json"
 
 // https://vitejs.dev/config/
@@ -17,8 +17,7 @@ export default defineConfig(({mode}) => {
       port: 5177
     },
     plugins: [
-      transformUserScriptPlugin({
-        isDev,
+      transformUserScript({
         scriptMeta: {
           name: pkg.name,
           match: "*://**/*",

@@ -1,6 +1,6 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import {transformUserScriptPlugin} from "./vite-plugin/transformUserScriptPlugin.js";
+import {transformUserScript} from "@vanilla-pudding/vite-plugin";
 import pkg from "./package.json"
 
 // https://vitejs.dev/config/
@@ -19,8 +19,7 @@ export default defineConfig(({mode}) => {
     },
     plugins: [
       vue(),
-      transformUserScriptPlugin({
-        isDev,
+      transformUserScript({
         scriptMeta: {
           name: pkg.name,
           match: "*://**/*",

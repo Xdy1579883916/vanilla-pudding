@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@types/chrome": "latest",
+    "@vanilla-pudding/vite-plugin": "^1.0.0",
     "alova": "^2.21.3",
     "vite": "^5.3.1"
   }
