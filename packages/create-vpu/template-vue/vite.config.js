@@ -1,4 +1,5 @@
 import {defineConfig} from 'vite'
+import vue from '@vitejs/plugin-vue'
 import {transformUserScriptPlugin} from "./vite-plugin/transformUserScriptPlugin.js";
 import pkg from "./package.json"
 
@@ -17,6 +18,7 @@ export default defineConfig(({mode}) => {
       port: 5177
     },
     plugins: [
+      vue(),
       transformUserScriptPlugin({
         isDev,
         scriptMeta: {

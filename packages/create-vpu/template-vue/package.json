@@ -27,10 +27,12 @@
     "dist"
   ],
   "dependencies": {
-    "@vanilla-pudding/message": "^1.0.0"
+    "@vanilla-pudding/message": "^1.0.0",
+    "vue": "^3.4.30"
   },
   "devDependencies": {
     "@types/chrome": "latest",
+    "@vitejs/plugin-vue": "^5.0.5",
     "alova": "^2.21.3",
     "vite": "^5.3.1"
   }

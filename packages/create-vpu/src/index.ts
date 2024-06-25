@@ -3,7 +3,7 @@ import path from 'node:path'
 import {fileURLToPath} from 'node:url'
 import minimist from 'minimist'
 import prompts from 'prompts'
-import {red, reset, yellow,} from 'kolorist'
+import {blue, red, reset, yellow,} from 'kolorist'
 
 const argv = minimist<{
   template?: string
@@ -118,6 +118,11 @@ const FRAMEWORKS: Framework[] = [
         name: 'vanilla',
         display: 'JavaScript',
         color: yellow,
+      },
+      {
+        name: 'vue',
+        display: 'vue',
+        color: blue,
       },
     ],
   },
