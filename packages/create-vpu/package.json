@@ -1,6 +1,6 @@
 {
   "name": "create-vpu",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "创建香草布丁用户脚本 create-vanilla-pudding-userscript",
   "type": "module",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "files": [
     "index.js",
-    "template-vanilla",
+    "template-*/**",
     "dist"
   ],
   "keywords": [],
