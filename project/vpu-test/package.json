@@ -1,6 +1,6 @@
 {
-  "name": "@vanilla-pudding/userscript-test-message",
-  "description": "本地消息通信测试",
+  "name": "@vanilla-pudding/vpu-test",
+  "description": "用户脚本功能测试用",
   "version": "1.0.0",
   "type": "module",
   "private": false,
