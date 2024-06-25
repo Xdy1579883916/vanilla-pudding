@@ -1,13 +1,14 @@
 {
-  "name": "@vanilla-pudding/vpu-test",
-  "description": "用户脚本功能测试用",
+  "name": "@vanilla-pudding/vite-plugin",
+  "description": "香草布丁-vite-plugin",
   "version": "1.0.0",
   "type": "module",
   "private": false,
+  "author": "deyu",
+  "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "rm-all": "rimraf .output node_modules",
     "build": "vite build",
-    "preview": "vite preview",
     "prepublishOnly": "pnpm build",
     "push": "npm publish"
   },
@@ -15,20 +16,18 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "@vanilla-pudding/message": "workspace:*",
-    "@vanilla-pudding/vite-plugin": "workspace:*"
-  }
+  "devDependencies": {}
 }

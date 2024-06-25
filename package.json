@@ -8,10 +8,12 @@
     "preinit": "run-p rm:* && run-s step-1:*",
     "step-1:init": "pnpm i",
     "step-1:build": "pnpm build-packages",
+    "rm:vite-plugin": "pnpm run -C packages/vite-plugin rm-all",
     "rm:message": "pnpm run -C packages/message rm-all",
     "rm:ext": "pnpm run -C project/ext rm-all",
     "rm:self": "rimraf node_modules",
     "build-packages": "run-s packages:*",
+    "packages:vite-plugin": "pnpm run -C packages/vite-plugin build",
     "packages:message": "pnpm run -C packages/message build",
     "build:ext": "pnpm run -C project/ext build"
   },

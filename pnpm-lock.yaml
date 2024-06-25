@@ -117,17 +117,22 @@ importers:
 
   packages/message: {}
 
+  packages/vite-plugin: {}
+
   project/ext:
     dependencies:
       '@vanilla-pudding/message':
         specifier: workspace:*
         version: link:../../packages/message
 
-  project/userscript-test-message:
+  project/vpu-test:
     dependencies:
       '@vanilla-pudding/message':
         specifier: workspace:*
         version: link:../../packages/message
+      '@vanilla-pudding/vite-plugin':
+        specifier: workspace:*
+        version: link:../../packages/vite-plugin
 
 packages:
 
