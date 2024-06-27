@@ -27,7 +27,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vanilla-pudding/message": "^1.0.0",
+    "@vanilla-pudding/message": "^1.1.0",
     "vue": "^3.4.30"
   },
   "devDependencies": {
