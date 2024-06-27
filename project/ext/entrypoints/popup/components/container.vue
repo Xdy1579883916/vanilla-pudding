@@ -118,7 +118,7 @@ async function handleDel(item) {
   })
 
   async function doDel() {
-    await backgroundScriptService.deleteUserScript(item.id);
+    await backgroundScriptService.removeUserScript(item.id);
     await query()
     message.success("脚本已删除")
   }
