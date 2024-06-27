@@ -1,7 +1,7 @@
 {
   "name": "@vanilla-pudding/message",
   "description": "香草布丁-消息通信包",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "private": false,
   "author": "deyu",

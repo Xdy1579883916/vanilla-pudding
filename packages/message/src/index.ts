@@ -1,5 +1,5 @@
 import {guid} from "./guid";
-import {BackgroundToolService} from "./type";
+import {BackgroundToolService, TWdeCors} from "./type";
 
 const messagePrefix = "vanilla-pudding"
 
@@ -260,10 +260,6 @@ export function useExt(): Extension {
     return ext;
 }
 
-// const pv = useExt().getVersion()
-//
-// console.log(pv)
-//
-// useExt().post("hello", "", "", "").then(res => {
-//     console.log("hello res", res)
-// })
+export function createCors(opt: TWdeCors) {
+  return JSON.stringify(opt)
+}

@@ -55,11 +55,11 @@ export class BackgroundToolService {
         return chrome.cookies.get(option);
     }
 
-    async cookieGetAll(option: chrome.cookies.Details) {
+    async cookieGetAll(option: chrome.cookies.GetAllDetails) {
         return chrome.cookies.getAll(option);
     }
 
-    async cookieSet(option: chrome.cookies.Details) {
+    async cookieSet(option: chrome.cookies.SetDetails) {
         return chrome.cookies.set(option);
     }
 

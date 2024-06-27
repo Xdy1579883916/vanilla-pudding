@@ -2,7 +2,7 @@
   "name": "@vanilla-pudding/ext",
   "description": "插件",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "scripts": {
     "rm-all": "rimraf dist node_modules",
