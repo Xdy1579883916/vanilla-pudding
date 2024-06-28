@@ -27,3 +27,4 @@ pnpm-debug.log*
 !.vscode/settings.json
 # vue3的基础模板
 !.vscode/vue3.code-snippets
+pnpm-lock.yaml
