@@ -1,14 +1,14 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {transformUserScript} from "@vanilla-pudding/vite-plugin";
-
+import deps from "deyu-deps"
 
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
   const isDev = mode === 'development';
   const cdnScripts = {
-    "vue": "https://js-c.etc4.com/pro/js/vue.MCL5DJ5O.js",
-    "naive-ui": "https://js-c.etc4.com/pro/js/naive-ui.4HRUQBDM.js",
+    ...deps,
+    // 或许总是应该引入最新的
     "@vanilla-pudding/message": "https://unpkg.com/@vanilla-pudding/message/dist/index.js",
   }
 
@@ -21,8 +21,7 @@ export default defineConfig(({mode}) => {
       transformUserScript({
         scriptMeta: {
           name: "消息通信测试",
-          match: "*://baidu.com/*",
-          allFrames: true,
+          match: "*://www.baidu.com/*",
           runAt: "document_start",
         },
         cdnScripts,

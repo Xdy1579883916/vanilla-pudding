@@ -21,6 +21,7 @@
     "@webext-core/proxy-service": "^1.2.0",
     "alova": "^2.21.3",
     "dexie": "^4.0.7",
+    "deyu-deps": "^0.0.4",
     "monaco-editor": "^0.50.0",
     "naive-ui": "^2.38.2",
     "nanoid": "^5.0.7",

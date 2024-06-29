@@ -7,8 +7,6 @@ export default defineConfig(({mode}) => {
   const isDev = mode === 'development';
   // 可直接使用网络的ESM的CDN包
   const cdnScripts = {
-    // "vue": "https://js-c.etc4.com/pro/js/vue.MCL5DJ5O.js",
-    // "naive-ui": "https://js-c.etc4.com/pro/js/naive-ui.4HRUQBDM.js",
     "@vanilla-pudding/message": "https://unpkg.com/@vanilla-pudding/message/dist/index.js",
   }
 
@@ -20,8 +18,7 @@ export default defineConfig(({mode}) => {
       transformUserScript({
         scriptMeta: {
           name: pkg.name,
-          match: "*://**/*",
-          allFrames: "true",
+          match: "*://www.baidu.com/*"
         },
         cdnScripts,
       })
