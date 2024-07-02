@@ -1,1 +1,1 @@
-# userscript-test-message 用户脚本消息测试
+# @vanilla-pudding/vpu-test 用户脚本功能测试用
