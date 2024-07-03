@@ -3,6 +3,7 @@ import {ruleDNRTool, TWdeCors} from "@/lib/rules";
 import {AlovaMethodCreateConfig, createAlova, Method, MethodType, RequestBody} from 'alova';
 import GlobalFetch from 'alova/GlobalFetch';
 import {upperCase} from "lodash-es";
+import qs, {type BooleanOptional, IStringifyOptions} from "qs"
 
 
 type ResponseType =
@@ -33,11 +34,28 @@ const alovaInstance = createAlova({
     if (cors) {
       await onBeforeSetCors(cors)
     }
-    const content_type: ResponseType = getRow(method, "config.meta.content_type", "json")
+    const content_type: ContentType = getRow(method, "config.meta.content_type", "json")
+    const qs_options = getRow(method, "config.meta.qs_options", {})
+    const set_content_type: ContentType = getRow(method, "config.meta.set_content_type", true)
+
+    const ContentType = ContentTypeMap[content_type]
+
+    // 设置 ContentType
+    function getContentType() {
+      if (!set_content_type) return {}
+      if (content_type === 'formData' && check(method.data, "Object")) {
+        const field = ['blobFields', 'fileFields'];
+        // 检查formData是否包含文件字段
+        const hasFile = !!Object.keys(method.data).filter(v => field.includes(v)).length;
+        if (hasFile)
+          return {}
+      }
+      return ContentType ? {'Content-Type': ContentType} : {}
+    }
 
     // 处理请求头
     method.config.headers = {
-      'Content-Type': ContentTypeMap[content_type],
+      ...(getContentType()),
       ...(method.config.headers || {}),
     }
 
@@ -46,6 +64,7 @@ const alovaInstance = createAlova({
       await doBlobFields(method.data)
     }
 
+    method.data = parseDataByContentType(content_type, method.data, qs_options)
   },
   // 使用数组的两个项，分别指定请求成功的拦截器和请求失败的拦截器
   responded: {
@@ -105,6 +124,33 @@ const alovaInstance = createAlova({
   },
 });
 
+/**
+ * 根据设置的 ContentType 格式化当前data 对象的格式
+ * @param content_type
+ * @param data
+ * @param qs_options
+ */
+function parseDataByContentType(content_type: ContentType, data: any, qs_options?: any) {
+  switch (content_type) {
+    case "form": {
+      if (typeof data === "string")
+        return data
+
+      return qs.stringify(data, qs_options)
+    }
+    case "formData": {
+      const formData: FormData = new FormData()
+      for (const [key, value] of Object.entries(data)) {
+        formData.append(key, value as any)
+      }
+      return formData
+    }
+    default: {
+      return data
+    }
+  }
+}
+
 async function doBlobFields(data: any) {
   if (!check(data, "Object")) {
     return
@@ -117,7 +163,7 @@ async function doBlobFields(data: any) {
   }
   for (const field of fileFields) {
     const value = data[field]
-    const result = await fetch(value).then(res => res.blob())
+    const result = await fetch(value.uri).then(res => res.blob())
     data[field] = new File([result], value.filename)
   }
   delete data.blobFields
@@ -140,9 +186,16 @@ async function onEndSetCors(cors_value: string) {
 
 interface Config extends AlovaMethodCreateConfig<unknown, unknown, FetchRequestInit, Headers> {
   meta: {
+    // 跨域设置、请求头修改等
     cors?: TWdeCors | string
+    // 设置请求的 ContentType, 会根据 ContentType 进行数据格式化
     content_type?: ContentType
+    // 控制是否设置 ContentType
+    set_content_type?: boolean
+    // 控制响应数据类型
     response_type?: ResponseType
+    // 设置 qs 的配置
+    qs_options?: IStringifyOptions<BooleanOptional>
     [k: string]: any
   }
 }
