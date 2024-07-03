@@ -1,4 +1,5 @@
 import {AlovaMethodCreateConfig, Method, MethodType, RequestBody} from 'alova';
+import {BooleanOptional, IStringifyOptions} from "qs";
 
 
 export declare class NamedStorageInstance {
@@ -115,6 +116,8 @@ interface Config extends AlovaMethodCreateConfig<unknown, unknown, FetchRequestI
     cors?: TWdeCors | string;
     content_type?: ContentType;
     response_type?: ResponseType;
+    set_content_type?: boolean;
+    qs_options?: IStringifyOptions<BooleanOptional>;
     [k: string]: any;
   };
 }
