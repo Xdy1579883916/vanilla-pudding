@@ -142,16 +142,13 @@ export function parse2Hash(data: any): number {
 }
 
 export function joinToStr(arr, joinStr = "_", filter = true) {
-    let _tempArr = arr
-    let _result = ""
-    if (isArray(arr)) {
-        filter && (_tempArr = _tempArr.filter(Boolean))
-        _result = _tempArr.join(joinStr)
-    }
-    else {
-        _result = JSON.stringify(_tempArr)
-    }
-    return _result
+  if (!Array.isArray(arr)) {
+    return JSON.stringify(arr) || "";
+  }
+  if (filter) {
+    arr = arr.filter(Boolean);
+  }
+  return arr.join(joinStr);
 }
 
 export function clone(...args) {
