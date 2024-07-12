@@ -19,13 +19,13 @@
   },
   "dependencies": {
     "@webext-core/proxy-service": "^1.2.0",
-    "alova": "^2.21.3",
-    "dexie": "^4.0.7",
+    "alova": "^2.21.4",
+    "dexie": "^4.0.8",
     "deyu-deps": "^0.0.5",
     "monaco-editor": "^0.50.0",
     "naive-ui": "^2.38.2",
     "nanoid": "^5.0.7",
-    "qs": "^6.12.2",
+    "qs": "^6.12.3",
     "vue": "^3.4.31"
   },
   "devDependencies": {
@@ -35,19 +35,19 @@
     "@vicons/fluent": "^0.12.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.19",
-    "npm-run-all2": "^6.2.0",
+    "npm-run-all2": "^6.2.2",
     "postcss": "^8.4.39",
-    "rimraf": "^5.0.7",
-    "sass": "^1.77.6",
+    "rimraf": "^6.0.1",
+    "sass": "^1.77.8",
     "tailwindcss": "^3.4.4",
-    "terser": "^5.31.1",
+    "terser": "^5.31.2",
     "typescript": "^5.5.3",
-    "unplugin-auto-import": "^0.17.6",
+    "unplugin-auto-import": "^0.17.8",
     "unplugin-vue-components": "^0.27.2",
-    "vite": "^5.3.2",
+    "vite": "^5.3.3",
     "vite-plugin-dts": "^3.9.1",
-    "vue-tsc": "^2.0.24",
-    "wxt": "^0.18.10"
+    "vue-tsc": "^2.0.26",
+    "wxt": "^0.18.14"
   },
   "author": "1579883916@qq.com"
 }
