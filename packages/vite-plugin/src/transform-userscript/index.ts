@@ -16,6 +16,9 @@ interface ScriptMeta {
   "includeGlob"?: StrOrStrArr;
   "update-url"?: StrOrStrArr;
   "updateUrl"?: StrOrStrArr;
+  // 用户脚本注入的方式, 默认: esm
+  "run-with"?: "esm" | "raw";
+  "runWith"?: "esm" | "raw";
 }
 
 interface Options {

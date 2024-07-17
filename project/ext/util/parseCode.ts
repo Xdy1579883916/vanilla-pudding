@@ -1,5 +1,8 @@
-export function esm(code) {
-    return `
+export function parseCode(code: string, runWith = "esm") {
+  if (runWith !== "esm") {
+    return code
+  }
+  return `
     window.loadESMScript = loadESMScript;
     async function loadESMScript(script) {
       const blob = new Blob([script], { type: 'application/javascript' })

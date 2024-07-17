@@ -12,6 +12,7 @@ import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import {onMounted, ref} from "vue";
 import {useMessage} from "naive-ui";
 import {getBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC.ts";
+import codeExample from "@/entrypoints/editor/lib/code.js?raw"
 
 const message = useMessage()
 const backgroundScriptService = getBackgroundScriptService()
@@ -32,11 +33,7 @@ onMounted(async () => {
   }
 
   // 代码
-  let code = `// @name new-script
-// @match <all_urls>
-// @runAt document_idle
-console.log(1);
-`
+  let code = codeExample
   const info = await backgroundScriptService.getUserScript(id)
   // 这是修改脚本
   if (info) {

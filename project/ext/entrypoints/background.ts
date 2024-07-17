@@ -14,7 +14,9 @@ export default defineBackground(() => {
     const backgroundScriptService = registerBackgroundScriptService()
     const backgroundToolService = registerBackgroundToolService()
 
+    // @ts-ignore
     self.backgroundScriptService = backgroundScriptService
+    // @ts-ignore
     self.backgroundToolService = backgroundToolService
     console.log("background - service", self)
 
@@ -53,10 +55,10 @@ export default defineBackground(() => {
         } else {
             await sessionStore.set(activeFlagKey, true)
             try {
-                const details = await Promise.race([
+                const details = (await Promise.race([
                     installDetailsPromise, // 在一般启动时, 该Promise永远不会完成,  他只在安装、更新时完成
                     timeout(1000) // 如果超时, 说明是一般启动.
-                ]);
+                ])) as chrome.runtime.InstalledDetails;
                 switch (details.reason) {
                     case "install": {
                         return {reason: LaunchReason.Install};

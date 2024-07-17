@@ -40,7 +40,7 @@ export class ScriptDAO {
     return isUserScriptsAPIAvailable()
   }
 
-  async getAllEnabledUserScripts() {
+  async getAllEnabledUserScripts(): Promise<any[]> {
     const objects = await this.db.userScripts.where("enabled").equals(
       1
       /* True */
@@ -108,6 +108,7 @@ function parseMetadata(code) {
     updateURLs: [],
     allFrames: false, // true, false
     world: "USER_SCRIPT", // MAIN, USER_SCRIPT
+    runWith: "esm", // esm | raw
   }
   for (const {key, value} of parseMetadataLines(code)) {
     switch (key) {
@@ -161,6 +162,12 @@ function parseMetadata(code) {
       }
       case "world": {
         opt.world = value
+        break;
+      }
+      case "run-with":
+      case "runWith": {
+        // only esm | raw
+        opt.runWith = ["esm", "raw"].includes(value) ? value : "esm"
         break;
       }
     }
