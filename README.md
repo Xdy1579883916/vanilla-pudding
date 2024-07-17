@@ -85,7 +85,7 @@ interface ScriptMeta {
 ```js
 // @name Hello World
 // @match <all_urls>
-import {addStyleSheet} from 'https://parseCode.sh/userstyle@0.2.1'
+import {addStyleSheet} from 'https://esm.sh/userstyle@0.2.1'
 
 addStyleSheet(`
   *:before {
@@ -106,7 +106,7 @@ addStyleSheet(`
 - [香草布丁-通信包](packages/message/package.json) 提供了轻松使用插件的高级API。
 - [香草布丁-vite-plugin](packages/vite-plugin/package.json)
   - 自动按照配置生成注释，轻松设置MataData。
-  - 支持 parseCode，减少打包体积。
+  - 支持 esm，减少打包体积。
 
 ### 技术分享
 
