@@ -27,19 +27,19 @@
 
 - Built-in MonacoEditor.
 
-  - A powerful manager that supports advanced API capabilities from the plugin.
-    - [x] Cookie `chrome.cookies`
-    - [x] Tabs `chrome.tabs`
-    - [x] Storage (`chrome.storage.sync`、`chrome.storage.local`、`chrome.storage.session`) Provides plugin-level storage
-      capabilities.
-    - [x] NamespaceStorage Based on indexDB, driven by Dexie, provides plugin-level storage capabilities with
-      namespaces.
-    - [x] RuleDNRTool `chrome.declarativeNetRequest`
-    - [x] Plugin requests, based on `alova`
-      - Cross-domain requests
-      - Modify request headers
-      - Other alova features，Such as: request cache, etc.
-      - Use example templates to build user scripts with vite (detailed introduction below).
+- A powerful manager that supports advanced API capabilities from the plugin.
+  - [x] Cookie `chrome.cookies`
+  - [x] Tabs `chrome.tabs`
+  - [x] Storage (`chrome.storage.sync`、`chrome.storage.local`、`chrome.storage.session`) Provides plugin-level storage
+    capabilities.
+  - [x] NamespaceStorage Based on indexDB, driven by Dexie, provides plugin-level storage capabilities with
+    namespaces.
+  - [x] RuleDNRTool `chrome.declarativeNetRequest`
+  - [x] Plugin requests, based on `alova`
+    - Cross-domain requests
+    - Modify request headers
+    - Other alova features，Such as: request cache, etc.
+    - Use example templates to build user scripts with vite (detailed introduction below).
 
 ## Metadata
 
