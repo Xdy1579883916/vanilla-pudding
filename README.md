@@ -19,8 +19,7 @@
 
 ## 你什么时候需要这个？
 
--
-一个现代的脚本管理器，默认支持[ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
+- 一个现代的脚本管理器，默认支持[ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
 的脚本加载器
 - 一个类似 [Tampermonkey](https://www.tampermonkey.net/) ，但不支持 GM_* API的脚本管理器
 - 内置 MonacoEditor
