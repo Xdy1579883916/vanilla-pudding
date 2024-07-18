@@ -2,29 +2,27 @@
 
 ![logo](/project/ext/public/icon/128.png)
 
-### 香草布丁 名称由来
+## 简体中文 | [English](./README_EN.md)
+
+
+## 名称由来
 
 - JavaScript 又被大家称为 vanilla-js
 - 而脚本管理器类似于 JavaScript 的 “补丁”
 - 因此本项目被我称为 《香草布丁》 vanilla pudding。
 
-### 插件支持的环境
+## 插件安装与环境要求
 
 - 从 ChromeWebStore [安装](https://chrome.google.com/webstore/detail/fencadnndhdeggodopebjgdfdlhcimfk)
 - 适用于现代浏览器的简约 JavaScript 用户脚本加载器和管理器。
 - 为了使用此扩展程序，您需要 Chrome 120 或更高版本，并启用[开发者模式](https://www.tampermonkey.net/faq.php#Q209)。
 
-### 灵感💡来自 [eternity](https://github.com/BlackGlory/eternity) ,版权声明 [LICENSE](LICENSE)
+## 你什么时候需要这个？
 
-- 这源自一次巧合, 我在GitHub闲逛的时候，发现了这个项目，它让我觉得，这似乎和我想要做的东西很像。
-- 取自开源, 回馈开源。
-
-### 你什么时候需要这个？
-
-- eternity 替代, 核心能力是相同的, 所以他的案例 香草布丁 也支持。
-- 一个类似 [Tampermonkey](https://www.tampermonkey.net/) 的脚本管理器
-- 一个现代的管理器，支持[ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
-  的脚本加载器
+-
+一个现代的脚本管理器，默认支持[ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
+的脚本加载器
+- 一个类似 [Tampermonkey](https://www.tampermonkey.net/) ，但不支持 GM_* API的脚本管理器
 - 内置 MonacoEditor
 - 一个强大的管理器，支持来自插件的高级API能力 [服务源码](project/ext/lib/service/backgroundToolService.ts)
   - [x] Cookie `chrome.cookies`
@@ -33,8 +31,12 @@
   - [x] NamespaceStorage 基于 indexDB, 由 Dexie 驱动，提供带有命名空间的插件级存储能力。
   - [x] RuleDNRTool `chrome.declarativeNetRequest`
   - [x] 插件请求, 基于 `alova`
+    - 请求跨域
+    - 修改请求头
+    - 其他 alova 特性, 如：请求缓存等
+    - 使用示例模版，通过 vite 构建用户脚本（此部分下面有详细介绍）。
 
-### MataData
+## MataData
 
 您需要将元数据以注释的形式写在脚本的开头，格式请参考示例。
 
@@ -69,7 +71,7 @@ interface ScriptMeta {
 }
 ```
 
-### 案例一
+## 案例一
 
 ```js
 // @name allow-temu-translate
@@ -80,7 +82,7 @@ interface ScriptMeta {
 })();
 ```
 
-### 案例二 ESM 支持， 来自 [eternity](https://github.com/BlackGlory/eternity?tab=readme-ov-file#example)
+## 案例二 ESM 支持， 来自 [eternity](https://github.com/BlackGlory/eternity?tab=readme-ov-file#example)
 
 ```js
 // @name Hello World
@@ -98,8 +100,9 @@ addStyleSheet(`
 `)
 ```
 
-### 更多高级使用，推荐使用示例模板  [create-vpu](packages/create-vpu/package.json) (create-vanilla-pudding-userscript) [npmjs.com](https://www.npmjs.com/package/create-vpu)
+## 更多高级使用，推荐使用示例模板  [create-vpu](https://www.npmjs.com/package/create-vpu)
 
+- create-vpu [源码](packages/create-vpu/package.json)
 - 创建你的第一个 vanilla-pudding 用户脚本项目。 `npm create vpu@latest`
 - 示例模板使用 vite 构建你的用户脚本,
 - build 后可以直接复制到用户脚本管理器中。也可以打包发布到 npm [就像这个工具](https://www.npmjs.com/package/dpms-tools)。
@@ -108,7 +111,7 @@ addStyleSheet(`
   - 自动按照配置生成注释，轻松设置MataData。
   - 支持 esm，减少打包体积。
 
-### 技术分享
+## 技术分享
 
 - [wxt](https://wxt.dev/) 用于快速构建浏览器扩展。
 - [vite](https://vitejs.dev/) 我常用的前端构建工具
@@ -119,3 +122,14 @@ addStyleSheet(`
     建立连接, 进行服务调用。
   - 借鉴 `@webext-core/proxy-service` 的 Proxy, 为用户提供友好的
     简单、类型安全的调用方案。[测试用例](project/vpu-test/src/main.js)、 [ts类型](packages/message/src/type.ts)
+
+## 致谢
+
+- 受到 [eternity](https://github.com/BlackGlory/eternity) 的启发，创建了香草布丁。
+
+## 许可证
+
+- 取自开源, 回馈开源, 本项目使用 [MIT License](LICENSE)
+- 本项目包含了 [eternity](https://github.com/BlackGlory/eternity)
+  的部分代码 [MIT License](https://github.com/BlackGlory/eternity/blob/master/LICENSE)
+- [第三方许可证](THIRD-PARTY-LICENSE)
