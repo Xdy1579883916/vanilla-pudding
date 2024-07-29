@@ -1,4 +1,12 @@
-import {AlovaMethodCreateConfig, Method, MethodType, RequestBody} from 'alova';
+import {
+  AlovaDefaultCacheAdapter,
+  AlovaGenerics,
+  AlovaMethodCreateConfig,
+  Method,
+  MethodType,
+  RequestBody,
+  StatesExport
+} from 'alova';
 import {BooleanOptional, IStringifyOptions} from "qs";
 
 
@@ -110,32 +118,21 @@ type ResponseType =
   | "charset_encode";
 type ContentType = "json" | "form" | "formData";
 type FetchRequestInit = Omit<RequestInit, 'body' | 'headers' | 'method'>;
+type Meta = {
+  cors: TWdeCors | string;
+  content_type: ContentType;
+  set_content_type: boolean;
+  response_type: ResponseType;
+  qs_options: IStringifyOptions<BooleanOptional>;
+  [k: string]: any;
+};
+type Config =
+  {
+    meta?: Partial<Meta>;
+  }
+  & AlovaMethodCreateConfig<AlovaGenerics<any, any, FetchRequestInit, Response, Headers, AlovaDefaultCacheAdapter, AlovaDefaultCacheAdapter, StatesExport>, any, any>;
 
-interface Config extends AlovaMethodCreateConfig<unknown, unknown, FetchRequestInit, Headers> {
-  meta: {
-    cors?: TWdeCors | string;
-    content_type?: ContentType;
-    response_type?: ResponseType;
-    set_content_type?: boolean;
-    qs_options?: IStringifyOptions<BooleanOptional>;
-    [k: string]: any;
-  };
-}
-
-export declare function extRequest(type: MethodType, url: string, config?: Config, data?: RequestBody): Method<unknown, unknown, unknown, unknown, {
-  redirect?: RequestRedirect;
-  cache?: RequestCache;
-  credentials?: RequestCredentials;
-  integrity?: string;
-  keepalive?: boolean;
-  mode?: RequestMode;
-  priority?: RequestPriority;
-  referrer?: string;
-  referrerPolicy?: ReferrerPolicy;
-  signal?: AbortSignal | null;
-  window?: null;
-}, Response, Headers>;
-
+export declare function extRequest(type: MethodType, url: string, config?: Config, data?: RequestBody): Method<AlovaGenerics<any, any, FetchRequestInit, Response, Headers, AlovaDefaultCacheAdapter, AlovaDefaultCacheAdapter, StatesExport>>;
 
 export declare class BackgroundToolService {
   extSessionStore: StorageInstance;
