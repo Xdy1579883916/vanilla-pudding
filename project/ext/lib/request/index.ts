@@ -1,7 +1,16 @@
 import {check, getRow, parseJson} from "@/lib/tool.ts";
 import {ruleDNRTool, TWdeCors} from "@/lib/rules";
-import {AlovaMethodCreateConfig, createAlova, Method, MethodType, RequestBody} from 'alova';
-import GlobalFetch from 'alova/GlobalFetch';
+import {
+  AlovaDefaultCacheAdapter,
+  AlovaGenerics,
+  AlovaMethodCreateConfig,
+  createAlova,
+  Method,
+  MethodType,
+  RequestBody,
+  StatesExport
+} from 'alova';
+import GlobalFetch from 'alova/fetch';
 import {upperCase} from "lodash-es";
 import qs, {type BooleanOptional, IStringifyOptions} from "qs"
 
@@ -184,21 +193,25 @@ async function onEndSetCors(cors_value: string) {
   await ruleDNRTool.rmByHeader(cors)
 }
 
-interface Config extends AlovaMethodCreateConfig<unknown, unknown, FetchRequestInit, Headers> {
-  meta: {
-    // 跨域设置、请求头修改等
-    cors?: TWdeCors | string
-    // 设置请求的 ContentType, 会根据 ContentType 进行数据格式化
-    content_type?: ContentType
-    // 控制是否设置 ContentType
-    set_content_type?: boolean
-    // 控制响应数据类型
-    response_type?: ResponseType
-    // 设置 qs 的配置
-    qs_options?: IStringifyOptions<BooleanOptional>
-    [k: string]: any
-  }
+type Meta = {
+  // 跨域设置、请求头修改等
+  cors: TWdeCors | string
+  // 设置请求的 ContentType, 会根据 ContentType 进行数据格式化
+  content_type: ContentType
+  // 控制是否设置 ContentType
+  set_content_type: boolean
+  // 控制响应数据类型
+  response_type: ResponseType
+  // 设置 qs 的配置
+  qs_options: IStringifyOptions<BooleanOptional>
+  [k: string]: any
 }
+
+type Config =
+  {
+    meta?: Partial<Meta>;
+  }
+  & AlovaMethodCreateConfig<AlovaGenerics<any, any, FetchRequestInit, Response, Headers, AlovaDefaultCacheAdapter, AlovaDefaultCacheAdapter, StatesExport>, any, any>
 
 export function extRequest(
   type: MethodType,

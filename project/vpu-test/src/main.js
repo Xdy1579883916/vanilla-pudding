@@ -29,13 +29,14 @@ async function test_file_upload() {
   const blob = await fetch("https://cbu01.alicdn.com/img/ibank/O1CN012lfu0w2A2vEHsglkb_!!2216208058146-0-cib.310x310.jpg").then(r => r.blob())
   const blob_url = URL.createObjectURL(blob)
 
+  // https://www.amazon.com/s?k=SHOP+THE+LOOK&ref=nb_sb_noss
   const url = "https://www.amazon.com/stylesnap/upload"
   await useExt().bgt.doRequest(
     "POST",
     url,
     {
       params: {
-        "stylesnapToken": "hDG3phfjt4wRE%2BOJV3qoWKlJoa2wXJxTIAiPYhevoX1UAAAAAGaFGlcAAAAB"
+        "stylesnapToken": "hFPBPF%2BMXgcfUXBPxmZgcO1vooMLFbnEIqH1dQYgSjC9AAAAAGanstMAAAAB"
       },
       meta: {
         content_type: "formData",
@@ -55,7 +56,9 @@ async function test_file_upload() {
       //   "explore-looks.jpg",
       // ]
     }
-  );
+  ).then(res => {
+    console.log(res)
+  });
 }
 
 window.test = test

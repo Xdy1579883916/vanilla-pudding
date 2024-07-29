@@ -1,7 +1,7 @@
 import {first} from "lodash-es";
 import {joinToStr, parseToReg} from "@/lib/tool";
 
-interface TSetByKeyArrOpt {
+export interface TSetByKeyArrOpt {
     expired?: number;
     joinStr?: string;
 }
