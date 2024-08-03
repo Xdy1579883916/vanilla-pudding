@@ -16,7 +16,8 @@
     "build-packages": "run-s packages:*",
     "packages:vite-plugin": "pnpm run -C packages/vite-plugin build",
     "packages:message": "pnpm run -C packages/message build",
-    "build:ext": "pnpm run -C project/ext build"
+    "build:ext": "pnpm run -C project/ext build",
+    "prepare": "simple-git-hooks"
   },
   "dependencies": {
     "@webext-core/proxy-service": "^1.2.0",
@@ -36,11 +37,14 @@
     "@types/qs": "^6.9.15",
     "@vicons/fluent": "^0.12.0",
     "@vitejs/plugin-vue": "^5.1.2",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.8.0",
+    "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.2",
     "postcss": "^8.4.40",
     "rimraf": "^6.0.1",
     "sass": "^1.77.8",
+    "simple-git-hooks": "^2.11.1",
     "tailwindcss": "^3.4.7",
     "terser": "^5.31.3",
     "typescript": "^5.5.4",
@@ -49,6 +53,12 @@
     "vite": "^5.3.5",
     "vite-plugin-dts": "^3.9.1",
     "vue-tsc": "^2.0.29",
-    "wxt": "^0.19.2"
+    "wxt": "^0.19.3"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }
