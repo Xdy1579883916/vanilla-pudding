@@ -1,29 +1,29 @@
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import {transformUserScript} from "@vanilla-pudding/vite-plugin";
-import pkg from "./package.json"
+import { transformUserScript } from '@vanilla-pudding/vite-plugin'
+import pkg from './package.json'
 
 // https://vitejs.dev/config/
-export default defineConfig(({mode}) => {
-  const isDev = mode === 'development';
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development'
   // 可直接使用网络的ESM的CDN包
   const cdnScripts = {
-    "@vanilla-pudding/message": "https://unpkg.com/@vanilla-pudding/message/dist/index.js",
+    '@vanilla-pudding/message': 'https://unpkg.com/@vanilla-pudding/message/dist/index.js',
   }
 
   return {
     server: {
-      port: 5177
+      port: 5177,
     },
     plugins: [
       vue(),
       transformUserScript({
         scriptMeta: {
           name: pkg.name,
-          match: "*://www.baidu.com/*"
+          match: '*://www.baidu.com/*',
         },
         cdnScripts,
-      })
+      }),
     ],
     build: {
       modulePreload: false,
@@ -37,11 +37,11 @@ export default defineConfig(({mode}) => {
       // },
       rollupOptions: {
         output: {
-          entryFileNames: "[name].js",
-          format: "esm",
+          entryFileNames: '[name].js',
+          format: 'esm',
         },
-        external: Object.keys(cdnScripts)
-      }
-    }
+        external: Object.keys(cdnScripts),
+      },
+    },
   }
 })

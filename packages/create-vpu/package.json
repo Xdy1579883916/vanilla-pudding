@@ -1,8 +1,20 @@
 {
   "name": "create-vpu",
+  "type": "module",
   "version": "1.7.0",
   "description": "创建香草布丁用户脚本 create-vanilla-pudding-userscript",
-  "type": "module",
+  "author": "xiadeyu",
+  "license": "MIT",
+  "keywords": [],
+  "bin": {
+    "create-vpu": "index.js",
+    "cvpu": "index.js"
+  },
+  "files": [
+    "dist",
+    "index.js",
+    "template-*/**"
+  ],
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
@@ -14,18 +26,6 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "bin": {
-    "create-vpu": "index.js",
-    "cvpu": "index.js"
-  },
-  "files": [
-    "index.js",
-    "template-*/**",
-    "dist"
-  ],
-  "keywords": [],
-  "author": "xiadeyu",
-  "license": "MIT",
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
     "@types/minimist": "^1.2.5",

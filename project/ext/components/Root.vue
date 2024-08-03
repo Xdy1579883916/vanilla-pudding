@@ -1,26 +1,27 @@
-<script lang="ts" setup>
-import {dateZhCN, NConfigProvider, NMessageProvider, NModalProvider, zhCN, GlobalThemeOverrides } from 'naive-ui'
+<template>
+  <NConfigProvider
+    :theme-overrides="themeOverrides"
+    abstract
+    :locale="zhCN"
+    :date-locale="dateZhCN"
+    inline-theme-disabled
+  >
+    <NModalProvider>
+      <NMessageProvider>
+        <slot />
+      </NMessageProvider>
+    </NModalProvider>
+  </NConfigProvider>
+</template>
 
-const themeOverrides: GlobalThemeOverrides  = {
+<script lang="ts" setup>
+import type { GlobalThemeOverrides } from 'naive-ui'
+import { NConfigProvider, NMessageProvider, NModalProvider, dateZhCN, zhCN } from 'naive-ui'
+
+const themeOverrides: GlobalThemeOverrides = {
   common: {
-    primaryColor: "#1ec66d",
-    errorColor: "#ff0000",
+    primaryColor: '#1ec66d',
+    errorColor: '#ff0000',
   },
 }
 </script>
-
-<template>
-  <n-config-provider
-      :themeOverrides="themeOverrides"
-      abstract
-      :locale="zhCN"
-      :date-locale="dateZhCN"
-      inline-theme-disabled
-  >
-    <n-modal-provider>
-      <n-message-provider>
-        <slot />
-      </n-message-provider>
-    </n-modal-provider>
-  </n-config-provider>
-</template>

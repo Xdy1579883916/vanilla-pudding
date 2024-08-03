@@ -1,13 +1,21 @@
 <template>
   <div v-if="support" class="container flex flex-col p-2 space-y-2">
     <div class="flex space-x-2">
-      <n-button size="small" @click="handleNewScript">新增</n-button>
-      <n-button size="small" :loading="upLoaded" @click="handleUpdate()">更新</n-button>
-      <n-button size="small" @click="handleExport()">导出</n-button>
-      <n-button size="small" @click="handleImport()">导入</n-button>
+      <NButton size="small" @click="handleNewScript">
+        新增
+      </NButton>
+      <NButton size="small" :loading="upLoaded" @click="handleUpdate()">
+        更新
+      </NButton>
+      <NButton size="small" @click="handleExport()">
+        导出
+      </NButton>
+      <NButton size="small" @click="handleImport()">
+        导入
+      </NButton>
     </div>
     <div class="flex flex-col space-y-2">
-      <n-input
+      <NInput
         v-model:value="search"
         type="text"
         placeholder="筛选"
@@ -16,43 +24,45 @@
       />
       <div class="max-h-[320px] overflow-auto border-t">
         <div v-if="!showList.length" class="flex justify-center items-center h-[300px]">
-          <n-empty description="你的脚本列表空空的">
+          <NEmpty description="你的脚本列表空空的">
             <template #extra>
-              <n-button size="small" @click="handleNewScript">新增一个吧</n-button>
+              <NButton size="small" @click="handleNewScript">
+                新增一个吧
+              </NButton>
             </template>
-          </n-empty>
+          </NEmpty>
         </div>
         <div
-          v-else
           v-for="(item, index) in showList"
+          v-else
           :key="index"
           class="flex justify-between items-center border-b border-gray-200 w-full p-1 text-xs"
         >
           <div class="space-x-3 flex justify-between items-center">
-            <n-switch
+            <NSwitch
               size="small"
               :value="item.enabled"
               @update:value="handleTriggerEnabled(item)"
             />
-            <n-button
+            <NButton
               text
               tag="div"
               :title="item.name"
               @click="handleEditScript(item.id)"
             >
-              <n-ellipsis style="max-width: 200px" :tooltip="false">
+              <NEllipsis style="max-width: 200px" :tooltip="false">
                 {{ item.name }}
-              </n-ellipsis>
-            </n-button>
+              </NEllipsis>
+            </NButton>
           </div>
           <div class="flex">
-            <n-button quaternary circle type="error" size="small" @click="handleDel(item)">
+            <NButton quaternary circle type="error" size="small" @click="handleDel(item)">
               <template #icon>
-                <n-icon size="20">
-                  <delete16-regular/>
-                </n-icon>
+                <NIcon size="20">
+                  <Delete16Regular />
+                </NIcon>
               </template>
-            </n-button>
+            </NButton>
           </div>
         </div>
       </div>
@@ -64,10 +74,10 @@
 </template>
 
 <script setup lang="ts">
-import {NButton, NEllipsis, NEmpty, NIcon, NInput, NSwitch, useMessage, useModal} from "naive-ui";
-import {getBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC.ts";
-import {computed, onMounted, ref} from "vue";
-import {Delete16Regular} from "@vicons/fluent"
+import { NButton, NEllipsis, NEmpty, NIcon, NInput, NSwitch, useMessage, useModal } from 'naive-ui'
+import { computed, onMounted, ref } from 'vue'
+import { Delete16Regular } from '@vicons/fluent'
+import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
 
 const message = useMessage()
 const modal = useModal()
@@ -76,7 +86,7 @@ const backgroundScriptService = getBackgroundScriptService()
 
 const list = ref([])
 const support = ref(false)
-const search = ref("")
+const search = ref('')
 const showList = computed(() => {
   return list.value.filter((item) => {
     return item.name.toLowerCase().includes(search.value.toLowerCase())
@@ -85,7 +95,7 @@ const showList = computed(() => {
 
 async function query() {
   if (!support.value) {
-    message.error("请启用插件开发者模式")
+    message.error('请启用插件开发者模式')
     return
   }
   list.value = await backgroundScriptService.getAllUserScripts()
@@ -97,30 +107,30 @@ onMounted(async () => {
 })
 
 async function handleTriggerEnabled(item) {
-  await backgroundScriptService.setUserScriptEnabled(item.id, !item.enabled);
+  await backgroundScriptService.setUserScriptEnabled(item.id, !item.enabled)
   await query()
 }
 
 async function handleDel(item) {
   const m = modal.create({
     title: '确认删除吗',
-    type: "warning",
+    type: 'warning',
     preset: 'dialog',
     content: '备份了吗? 删了可就没了',
-    positiveText: "确认",
+    positiveText: '确认',
     onPositiveClick() {
       doDel()
     },
-    negativeText: "算了",
+    negativeText: '算了',
     onNegativeClick() {
       m.destroy()
-    }
+    },
   })
 
   async function doDel() {
-    await backgroundScriptService.removeUserScript(item.id);
+    await backgroundScriptService.removeUserScript(item.id)
     await query()
-    message.success("脚本已删除")
+    message.success('脚本已删除')
   }
 }
 
@@ -133,7 +143,7 @@ async function handleNewScript() {
   handleEditScript(id)
 }
 
-const upLoaded = ref(false);
+const upLoaded = ref(false)
 
 async function handleUpdate() {
   try {
@@ -144,10 +154,11 @@ async function handleUpdate() {
     for (const id of ids) {
       await backgroundScriptService.upgradeUserScriptToLatest(id)
     }
-
-  } catch (e) {
+  }
+  catch (e) {
     message.error(e.message)
-  } finally {
+  }
+  finally {
     upLoaded.value = false
   }
 }
@@ -155,50 +166,52 @@ async function handleUpdate() {
 async function handleExport() {
   try {
     await query()
-    console.log(list.value);
+    console.log(list.value)
     downloadJsonFile(list.value, `香草布丁用户脚本导出-${Date.now()}.json`)
-  } catch (e) {
+  }
+  catch (e) {
     message.error(e.message)
   }
 }
 
 function downloadJsonFile(jsonObject, fileName) {
-  const jsonString = JSON.stringify(jsonObject, null, 2);
-  const blob = new Blob([jsonString], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.href = url;
-  a.download = fileName;
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  const jsonString = JSON.stringify(jsonObject, null, 2)
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.style.display = 'none'
+  document.body.appendChild(a)
+  a.href = url
+  a.download = fileName
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
 }
 
 function readJsonFile(callback) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'application/json';
-  input.style.display = 'none';
-  document.body.appendChild(input);
-  input.addEventListener('change', function (event: any) {
-    const file = event.target.files[0];
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'application/json'
+  input.style.display = 'none'
+  document.body.appendChild(input)
+  input.addEventListener('change', (event: any) => {
+    const file = event.target.files[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = function (e: any) {
         try {
-          const jsonObject = JSON.parse(e.target.result);
-          callback(jsonObject);
-        } catch (error) {
-          console.error('Error parsing JSON:', error);
+          const jsonObject = JSON.parse(e.target.result)
+          callback(jsonObject)
         }
-      };
-      reader.readAsText(file);
+        catch (error) {
+          console.error('Error parsing JSON:', error)
+        }
+      }
+      reader.readAsText(file)
     }
-    document.body.removeChild(input);
-  });
-  input.click();
+    document.body.removeChild(input)
+  })
+  input.click()
 }
 
 async function handleImport() {
@@ -215,14 +228,14 @@ async function handleImport() {
       }
       await query()
     })
-  } catch (e) {
+  }
+  catch (e) {
     message.error(e.message)
   }
 }
 
 async function handleEditScript(id) {
   const url = getEditorURL(id)
-  chrome.tabs.create({url})
+  chrome.tabs.create({ url })
 }
-
 </script>

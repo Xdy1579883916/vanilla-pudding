@@ -1,1 +1,1 @@
-export * from "./transform-userscript"
+export * from './transform-userscript'

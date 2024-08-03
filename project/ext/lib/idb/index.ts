@@ -1,39 +1,40 @@
-import {Dexie, IndexableType, Table} from 'dexie'
-import {guid} from "@/util/guid";
-import {isUserScriptsAPIAvailable} from "@/lib/user-script";
+import type { IndexableType, Table } from 'dexie'
+import { Dexie } from 'dexie'
+import { guid } from '@/util/guid'
+import { isUserScriptsAPIAvailable } from '@/lib/user-script'
 
 class Database extends Dexie {
-  userScripts: Table<any, IndexableType, any>;
+  userScripts: Table<any, IndexableType, any>
 
   constructor() {
-    super("Database");
-    this.version(1).stores({userScripts: "++id, enabled"});
-    this.version(2).stores({userScripts: "id, enabled"}).upgrade(async (tx) => {
-      await this.table("userScripts").toCollection().modify((userScript) => {
-        userScript.id = guid();
-        delete userScript.name;
-        delete userScript.urlPatterns;
-      });
-    });
-    this.version(3).stores({userScripts: "id, enabled"}).upgrade(async (tx) => {
-      await this.table("userScripts").toCollection().modify((userScript) => {
-        userScript.id = guid();
-      });
-    });
-    this.userScripts = this.table("userScripts");
+    super('Database')
+    this.version(1).stores({ userScripts: '++id, enabled' })
+    this.version(2).stores({ userScripts: 'id, enabled' }).upgrade(async () => {
+      await this.table('userScripts').toCollection().modify((userScript) => {
+        userScript.id = guid()
+        delete userScript.name
+        delete userScript.urlPatterns
+      })
+    })
+    this.version(3).stores({ userScripts: 'id, enabled' }).upgrade(async () => {
+      await this.table('userScripts').toCollection().modify((userScript) => {
+        userScript.id = guid()
+      })
+    })
+    this.userScripts = this.table('userScripts')
   }
 }
 
 export class ScriptDAO {
-  private db: Database;
+  private db: Database
 
   constructor() {
-    this.db = new Database();
+    this.db = new Database()
   }
 
   async getAllUserScripts() {
-    const objects = await this.db.userScripts.toArray();
-    return objects.map(convertUserScriptObjectToUserScript);
+    const objects = await this.db.userScripts.toArray()
+    return objects.map(convertUserScriptObjectToUserScript)
   }
 
   isSupportAPI() {
@@ -41,60 +42,62 @@ export class ScriptDAO {
   }
 
   async getAllEnabledUserScripts(): Promise<any[]> {
-    const objects = await this.db.userScripts.where("enabled").equals(
-      1
+    const objects = await this.db.userScripts.where('enabled').equals(
+      1,
       /* True */
-    ).toArray();
-    return objects.map(convertUserScriptObjectToUserScript);
+    ).toArray()
+    return objects.map(convertUserScriptObjectToUserScript)
   }
 
   async getUserScript(id) {
-    const object2 = await this.db.userScripts.get(id);
+    const object2 = await this.db.userScripts.get(id)
     if (object2) {
-      return convertUserScriptObjectToUserScript(object2);
-    } else {
-      return null;
+      return convertUserScriptObjectToUserScript(object2)
+    }
+    else {
+      return null
     }
   }
 
   async deleteUserScript(id) {
-    await this.db.userScripts.delete(id);
+    await this.db.userScripts.delete(id)
   }
 
   async updateUserScriptEnabled(id, enabled) {
     await this.db.userScripts.update(id, {
-      enabled: enabled ? 1 : 0
+      enabled: enabled ? 1 : 0,
       /* False */
-    });
+    })
   }
 
   async upsertUserScript(id, code) {
-    await this.db.transaction("rw", this.db.userScripts, async () => {
-      const object2 = await this.db.userScripts.get(id);
+    await this.db.transaction('rw', this.db.userScripts, async () => {
+      const object2 = await this.db.userScripts.get(id)
       if (object2) {
         await this.db.userScripts.update(id, {
-          code
-        });
-      } else {
+          code,
+        })
+      }
+      else {
         await this.db.userScripts.add({
           id,
           code,
-          enabled: 1
+          enabled: 1,
           /* True */
-        });
+        })
       }
-    });
+    })
   }
 }
 
-function convertUserScriptObjectToUserScript(obj) {
-  const metadata = parseMetadata(obj.code);
+function convertUserScriptObjectToUserScript(obj): any {
+  const metadata = parseMetadata(obj.code)
   return {
     ...metadata,
     id: obj.id,
     code: obj.code,
     enabled: obj.enabled === 1,
-  };
+  }
 }
 
 function parseMetadata(code) {
@@ -107,111 +110,114 @@ function parseMetadata(code) {
     includeGlobs: [],
     updateURLs: [],
     allFrames: false, // true, false
-    world: "USER_SCRIPT", // MAIN, USER_SCRIPT
-    runWith: "esm", // esm | raw
+    world: 'USER_SCRIPT', // MAIN, USER_SCRIPT
+    runWith: 'esm', // esm | raw
   }
-  for (const {key, value} of parseMetadataLines(code)) {
+  for (const { key, value } of parseMetadataLines(code)) {
     switch (key) {
-      case "name": {
+      case 'name': {
         opt.name = value
-        break;
+        break
       }
-      case "run-at":
-      case "runAt": {
+      case 'run-at':
+      case 'runAt': {
         opt.runAt = value
-        break;
+        break
       }
-      case "all-frames":
-      case "allFrames": {
-        opt.allFrames = value === "true"
-        break;
+      case 'all-frames':
+      case 'allFrames': {
+        opt.allFrames = value === 'true'
+        break
       }
-      case "match": {
-        const match = parseMatchValue(value);
+      case 'match': {
+        const match = parseMatchValue(value)
         if (match)
-          opt.matches.push(match);
-        break;
+          opt.matches.push(match)
+        break
       }
-      case "exclude-match":
-      case "excludeMatch": {
-        const match = parseMatchValue(value);
+      case 'exclude-match':
+      case 'excludeMatch': {
+        const match = parseMatchValue(value)
         if (match)
-          opt.excludeMatches.push(match);
-        break;
+          opt.excludeMatches.push(match)
+        break
       }
-      case "exclude-glob":
-      case "excludeGlob": {
-        const match = parseMatchValue(value);
+      case 'exclude-glob':
+      case 'excludeGlob': {
+        const match = parseMatchValue(value)
         if (match)
-          opt.excludeGlobs.push(match);
-        break;
+          opt.excludeGlobs.push(match)
+        break
       }
-      case "include-glob":
-      case "includeGlob": {
-        const match = parseMatchValue(value);
+      case 'include-glob':
+      case 'includeGlob': {
+        const match = parseMatchValue(value)
         if (match)
-          opt.includeGlobs.push(match);
-        break;
+          opt.includeGlobs.push(match)
+        break
       }
-      case "update-url":
-      case "updateUrl": {
-        const updateURL = parseUpdateURLValue(value);
+      case 'update-url':
+      case 'updateUrl': {
+        const updateURL = parseUpdateURLValue(value)
         if (updateURL)
-          opt.updateURLs.push(updateURL);
-        break;
+          opt.updateURLs.push(updateURL)
+        break
       }
-      case "world": {
+      case 'world': {
         opt.world = value
-        break;
+        break
       }
-      case "run-with":
-      case "runWith": {
+      case 'run-with':
+      case 'runWith': {
         // only esm | raw
-        opt.runWith = ["esm", "raw"].includes(value) ? value : "esm"
-        break;
+        opt.runWith = ['esm', 'raw'].includes(value) ? value : 'esm'
+        break
       }
     }
   }
 
   if (opt.name === null)
     return {}
-  return opt;
+  return opt
 }
 
 function parseNameValue(value) {
-  return value;
+  return value
 }
 
 function parseMatchValue(value) {
-  const re2 = /^(?<pattern>\S+)\s*$/;
-  const matched = value.match(re2);
+  const re2 = /^(?<pattern>\S+)\s*$/
+  const matched = value.match(re2)
   if (!matched)
-    return null;
-  const {pattern} = matched.groups;
-  return pattern;
+    return null
+  const { pattern } = matched.groups
+  return pattern
 }
 
 function isURLString(text) {
   try {
-    new URL(text);
-    return true;
-  } catch (_a) {
-    return false;
+    // eslint-disable-next-line no-new
+    new URL(text)
+    return true
+  }
+  catch {
+    return false
   }
 }
 
 function parseUpdateURLValue(value) {
   if (isURLString(value)) {
-    return value;
-  } else {
-    return null;
+    return value
+  }
+  else {
+    return null
   }
 }
 
 function* parseMetadataLines(code) {
-  const exp = /^\/\/ @(?<key>[\w-]+)[\s^\n]+(?<value>.*?)[\s^\n]*$/gm;
-  for (const {groups} of code.matchAll(exp)) {
-    const {key, value} = groups;
-    yield {key, value};
+  const exp = /^\/\/ @(?<key>[\w-]+)[\s^\n]+(?<value>.*?)[\s^\n]*$/gm
+  for (const { groups } of code.matchAll(exp)) {
+    const { key, value } = groups
+    yield { key, value }
   }
 }

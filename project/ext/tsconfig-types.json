@@ -1,10 +1,10 @@
 {
   "extends": "./.wxt/tsconfig.json",
   "exclude": [
-    "entrypoints/**/*",
+    "entrypoints/**/*"
   ],
   "include": [
-    "lib/**/*",
+    "lib/**/*"
   ],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
@@ -17,10 +17,10 @@
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-//    "outDir": ".types",
+    //    "outDir": ".types",
     "declaration": true,
     "noEmit": false,
     "rootDir": ".",
     "outFile": ".types/types.d.ts"
-  },
+  }
 }

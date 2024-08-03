@@ -1,9 +1,10 @@
 {
   "name": "vanilla-pudding",
-  "description": "香草布丁🌿🍮脚本管理",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "description": "香草布丁🌿🍮脚本管理",
+  "author": "1579883916@qq.com",
   "scripts": {
     "preinit": "run-p rm:* && run-s step-1:*",
     "step-1:init": "pnpm i",
@@ -29,6 +30,7 @@
     "vue": "^3.4.35"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.24.1",
     "@types/chrome": "latest",
     "@types/node": "latest",
     "@types/qs": "^6.9.15",
@@ -48,6 +50,5 @@
     "vite-plugin-dts": "^3.9.1",
     "vue-tsc": "^2.0.29",
     "wxt": "^0.19.2"
-  },
-  "author": "1579883916@qq.com"
+  }
 }

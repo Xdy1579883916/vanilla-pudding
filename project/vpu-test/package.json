@@ -1,9 +1,21 @@
 {
   "name": "@vanilla-pudding/vpu-test",
-  "description": "用户脚本功能测试用",
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
   "private": false,
+  "description": "用户脚本功能测试用",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,18 +27,6 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@vanilla-pudding/message": "workspace:*",
     "@vanilla-pudding/vite-plugin": "workspace:*"

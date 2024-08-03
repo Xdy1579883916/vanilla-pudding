@@ -1,8 +1,20 @@
 {
   "name": "userscript-starter",
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
   "private": false,
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,27 +26,15 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@vanilla-pudding/message": "^1.1.0",
     "vue": "^3.4.30"
   },
   "devDependencies": {
     "@types/chrome": "latest",
-    "@vitejs/plugin-vue": "^5.0.5",
     "@vanilla-pudding/vite-plugin": "^1.0.0",
-    "alova": "^2.21.3",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "alova": "^3.0.4",
     "vite": "^5.3.1"
   }
 }

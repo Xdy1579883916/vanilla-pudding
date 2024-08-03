@@ -1,9 +1,9 @@
 {
   "name": "@vanilla-pudding/ext",
-  "description": "插件",
-  "private": true,
-  "version": "1.6.0",
   "type": "module",
+  "version": "1.6.0",
+  "private": true,
+  "description": "插件",
   "scripts": {
     "rm-all": "rimraf dist node_modules",
     "dev": "wxt",

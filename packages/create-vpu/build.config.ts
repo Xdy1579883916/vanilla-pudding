@@ -1,6 +1,6 @@
 // import path from 'node:path'
 // import url from 'node:url'
-import {defineBuildConfig} from 'unbuild'
+import { defineBuildConfig } from 'unbuild'
 
 // const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -19,7 +19,7 @@ export default defineBuildConfig({
     prompts: 'prompts/lib/index.js',
   },
   hooks: {
-    'rollup:options'(ctx, options) {
+    'rollup:options': (ctx, options) => {
       options.plugins = [
         options.plugins,
       ]

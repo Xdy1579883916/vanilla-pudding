@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": false,
-    "noImplicitAny": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "isolatedModules": true,
-    "noImplicitThis": false,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "strict": false,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "vite.config.ts"],
   "exclude": ["node_modules", "dist"]

@@ -1,5 +1,5 @@
-export function parseCode(code: string, runWith = "esm") {
-  if (runWith !== "esm") {
+export function parseCode(code: string, runWith = 'esm') {
+  if (runWith !== 'esm') {
     return code
   }
   return `
