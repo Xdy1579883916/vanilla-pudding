@@ -1,6 +1,7 @@
 import {configureCSP, registerUserScript, unregisterAllUserScripts} from "@/lib/user-script";
 import {registerBackgroundToolService} from "@/lib/rpc/backgroundToolRPC";
 import {registerBackgroundScriptService} from "@/lib/rpc/backgroundScriptRPC";
+import {socketIoRegister} from "@/lib/ws-rpc/socket.ts";
 
 export default defineBackground(() => {
     // 后台 worker 每5分钟就会休眠，所以定时唤醒一下
@@ -19,6 +20,8 @@ export default defineBackground(() => {
     // @ts-ignore
     self.backgroundToolService = backgroundToolService
     console.log("background - service", self)
+
+    socketIoRegister(backgroundToolService)
 
     const LaunchReason = {
         Install: 0,

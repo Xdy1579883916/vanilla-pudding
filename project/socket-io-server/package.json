@@ -1,0 +1,17 @@
+{
+  "name": "@vanilla-pudding/socket-io-server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@socket.io/admin-ui": "^0.5.1",
+    "socket.io": "^4.7.5",
+    "socket.io-msgpack-parser": "^3.0.2"
+  }
+}

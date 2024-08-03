@@ -26,7 +26,9 @@
     "naive-ui": "^2.39.0",
     "nanoid": "^5.0.7",
     "qs": "^6.13.0",
-    "vue": "^3.4.35"
+    "vue": "^3.4.35",
+    "socket.io-client": "^4.7.5",
+    "socket.io-msgpack-parser": "^3.0.2"
   },
   "devDependencies": {
     "@types/chrome": "latest",
