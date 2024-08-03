@@ -25,15 +25,15 @@
     "monaco-editor": "^0.50.0",
     "naive-ui": "^2.39.0",
     "nanoid": "^5.0.7",
-    "qs": "^6.12.3",
-    "vue": "^3.4.34"
+    "qs": "^6.13.0",
+    "vue": "^3.4.35"
   },
   "devDependencies": {
     "@types/chrome": "latest",
     "@types/node": "latest",
     "@types/qs": "^6.9.15",
     "@vicons/fluent": "^0.12.0",
-    "@vitejs/plugin-vue": "^5.1.1",
+    "@vitejs/plugin-vue": "^5.1.2",
     "autoprefixer": "^10.4.19",
     "npm-run-all2": "^6.2.2",
     "postcss": "^8.4.40",
