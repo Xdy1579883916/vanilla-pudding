@@ -1,4 +1,4 @@
-# vanilla-pudding 香草布丁🌿🍮脚本管理
+# 香草布丁🌿🍮 用户脚本加载器和管理器
 
 ![logo](/project/ext/public/icon/128.png)
 
