@@ -16,4 +16,5 @@ export default antfu({
     indent: 2,
   },
   regexp: false,
+  unicorn: false,
 })

@@ -1,0 +1,22 @@
+extName: 香草布丁🌿🍮
+extDescription: 香草布丁用户脚本管理器,可以帮助您管理和运行浏览器用户脚本
+openSource: https://github.com/Xdy1579883916/vanilla-pudding
+noSupportTip: 请启用插件开发者模式以使用此插件
+
+script:
+  empty: 你的脚本列表空空的
+  manage: 管理脚本
+  create: 新增
+  create2: 新增一个吧
+  update: 更新
+  export: 导出
+  import: 导入
+searchFilter: 搜索过滤
+export:
+  file: 香草布丁用户脚本导出
+delete:
+  title: 确认删除吗?
+  content: 备份了吗? 删了可就没了哦~
+  positive: 确认
+  negative: 算了
+  success: 脚本已删除

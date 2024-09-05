@@ -5,6 +5,9 @@ import type { UserConfig } from 'vite'
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+  modules: [
+    '@wxt-dev/i18n/module',
+  ],
   imports: {
     addons: {
       vueTemplate: true,
@@ -17,8 +20,9 @@ export default defineConfig({
     disabled: true,
   },
   manifest: {
-    name: '香草布丁🌿🍮',
-    description: '香草布丁（vanillaJs补丁）是一个用户脚本管理器',
+    default_locale: 'en',
+    name: '__MSG_extName__',
+    description: '__MSG_extDescription__',
     minimum_chrome_version: '120',
     permissions: [
       'storage',

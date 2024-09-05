@@ -1,0 +1,22 @@
+extName: Vanilla Pudding🌿🍮
+extDescription: Vanilla Pudding Userscript Manager helps you manage and run browser userscripts
+openSource: https://github.com/Xdy1579883916/vanilla-pudding
+noSupportTip: Please enable plugin developer mode to use this plugin
+
+script:
+  empty: Your script list is empty
+  manage: Script Management
+  create: Add Script
+  create2: Add Script
+  update: Update Script
+  export: Export Script
+  import: Import Script
+searchFilter: Search Filter
+export:
+  file: vanilla-pudding-userscript-export
+delete:
+  title: Are you sure to delete ?
+  content: Have you backed up? If you delete it, it will be gone~
+  positive: Confirmed
+  negative: Forget it
+  success: The script has been deleted

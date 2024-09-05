@@ -1,33 +1,50 @@
 <template>
   <div v-if="support" class="container flex flex-col p-2 space-y-2">
-    <div class="flex space-x-2">
-      <NButton size="small" @click="handleNewScript">
-        新增
+    <div class="flex space-x-2 justify-between">
+      <NButton
+        text
+        tag="a"
+        :href="msg.openSource"
+        target="_blank"
+        type="primary"
+      >
+        <NImage
+          src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+          alt="GitHub"
+          class="size-6"
+          :preview-disabled="true"
+        />
       </NButton>
-      <NButton size="small" :loading="upLoaded" @click="handleUpdate()">
-        更新
-      </NButton>
-      <NButton size="small" @click="handleExport()">
-        导出
-      </NButton>
-      <NButton size="small" @click="handleImport()">
-        导入
-      </NButton>
+      <NDropdown
+        size="small"
+        :disabled="uploading"
+        :options="js_options"
+        @select="handleSelect"
+      >
+        <NButton :loading="uploading" size="small">
+          <template #icon>
+            <NIcon :size="22">
+              <Javascript16Regular />
+            </NIcon>
+          </template>
+          {{ msg.script_manage }}
+        </NButton>
+      </NDropdown>
     </div>
     <div class="flex flex-col space-y-2">
       <NInput
         v-model:value="search"
         type="text"
-        placeholder="筛选"
+        :placeholder="msg.searchFilter"
         size="small"
         clearable
       />
       <div class="max-h-[320px] overflow-auto border-t">
         <div v-if="!showList.length" class="flex justify-center items-center h-[300px]">
-          <NEmpty description="你的脚本列表空空的">
+          <NEmpty :description="msg.script_empty">
             <template #extra>
               <NButton size="small" @click="handleNewScript">
-                新增一个吧
+                {{ msg.script_create2 }}
               </NButton>
             </template>
           </NEmpty>
@@ -48,6 +65,7 @@
               text
               tag="div"
               :title="item.name"
+              style="line-height: unset"
               @click="handleEditScript(item.id)"
             >
               <NEllipsis style="max-width: 200px" :tooltip="false">
@@ -69,15 +87,69 @@
     </div>
   </div>
   <div v-else class="flex justify-center items-center text-[#f87171]" style="height: 100vh;">
-    请启用插件开发者模式
+    {{ msg.noSupportTip }}
   </div>
 </template>
 
 <script setup lang="ts">
-import { NButton, NEllipsis, NEmpty, NIcon, NInput, NSwitch, useMessage, useModal } from 'naive-ui'
-import { computed, onMounted, ref } from 'vue'
-import { Delete16Regular } from '@vicons/fluent'
+import {
+  NButton,
+  NDropdown,
+  NEllipsis,
+  NEmpty,
+  NIcon,
+  NImage,
+  NInput,
+  NSwitch,
+  useMessage,
+  useModal,
+} from 'naive-ui'
+import type { Component } from 'vue'
+import { computed, h, onMounted, ref } from 'vue'
+import {
+  AddCircle20Regular,
+  CalendarArrowDown20Regular,
+  CalendarArrowRight24Regular,
+  CalendarSync16Regular,
+  Delete16Regular,
+  Javascript16Regular,
+} from '@vicons/fluent'
 import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
+import { i18n } from '@/lib/i18n.ts'
+
+const msg = {
+  openSource: i18n.t('openSource'),
+  noSupportTip: i18n.t('noSupportTip'),
+  script_manage: i18n.t('script_manage'),
+  script_create: i18n.t('script_create'),
+  script_create2: i18n.t('script_create2'),
+  script_update: i18n.t('script_update'),
+  export: i18n.t('script_export'),
+  import: i18n.t('script_import'),
+  script_empty: i18n.t('script_empty'),
+  searchFilter: i18n.t('searchFilter'),
+  delete_title: i18n.t('delete_title'),
+  delete_content: i18n.t('delete_content'),
+  delete_negative: i18n.t('delete_negative'),
+  delete_positive: i18n.t('delete_positive'),
+  delete_success: i18n.t('delete_success'),
+  export_tip: i18n.t('export_tip'),
+  export_file: i18n.t('export_file'),
+}
+
+function renderIcon(icon: Component) {
+  return () => {
+    return h(
+      NIcon,
+      {
+        size: 23,
+      },
+      {
+        default: () => h(icon),
+      },
+    )
+  }
+}
 
 const message = useMessage()
 const modal = useModal()
@@ -93,9 +165,51 @@ const showList = computed(() => {
   })
 })
 
+const js_options = ref([
+  {
+    label: msg.script_create,
+    key: 'create',
+    icon: renderIcon(AddCircle20Regular),
+  },
+  {
+    label: msg.script_update,
+    key: 'update',
+    icon: renderIcon(CalendarSync16Regular),
+  },
+  {
+    label: msg.import,
+    key: 'import',
+    icon: renderIcon(CalendarArrowDown20Regular),
+  },
+  {
+    label: msg.export,
+    key: 'export',
+    icon: renderIcon(CalendarArrowRight24Regular),
+  },
+])
+function handleSelect(key: string | number) {
+  switch (key) {
+    case 'create':
+      handleNewScript()
+      break
+    case 'update':
+      handleUpdate()
+      break
+    case 'export':
+      handleExport()
+      break
+    case 'import':
+      handleImport()
+      break
+    case 'clean':
+      handleImport()
+      break
+  }
+}
+
 async function query() {
   if (!support.value) {
-    message.error('请启用插件开发者模式')
+    message.error(msg.noSupportTip)
     return
   }
   list.value = await backgroundScriptService.getAllUserScripts()
@@ -113,15 +227,15 @@ async function handleTriggerEnabled(item) {
 
 async function handleDel(item) {
   const m = modal.create({
-    title: '确认删除吗',
+    title: msg.delete_title,
     type: 'warning',
     preset: 'dialog',
-    content: '备份了吗? 删了可就没了',
-    positiveText: '确认',
+    content: msg.delete_content,
+    positiveText: msg.delete_positive,
     onPositiveClick() {
       doDel()
     },
-    negativeText: '算了',
+    negativeText: msg.delete_negative,
     onNegativeClick() {
       m.destroy()
     },
@@ -130,7 +244,7 @@ async function handleDel(item) {
   async function doDel() {
     await backgroundScriptService.removeUserScript(item.id)
     await query()
-    message.success('脚本已删除')
+    message.success(msg.delete_success)
   }
 }
 
@@ -140,14 +254,14 @@ function getEditorURL(userScriptId: string): string {
 
 async function handleNewScript() {
   const id = await backgroundScriptService.generateUserScriptId()
-  handleEditScript(id)
+  await handleEditScript(id)
 }
 
-const upLoaded = ref(false)
+const uploading = ref(false)
 
 async function handleUpdate() {
   try {
-    upLoaded.value = true
+    uploading.value = true
     await query()
     const ids = list.value.map(v => v.id)
 
@@ -159,7 +273,7 @@ async function handleUpdate() {
     message.error(e.message)
   }
   finally {
-    upLoaded.value = false
+    uploading.value = false
   }
 }
 
@@ -167,7 +281,7 @@ async function handleExport() {
   try {
     await query()
     console.log(list.value)
-    downloadJsonFile(list.value, `香草布丁用户脚本导出-${Date.now()}.json`)
+    downloadJsonFile(list.value, `${msg.export_file}-${Date.now()}.json`)
   }
   catch (e) {
     message.error(e.message)
