@@ -27,12 +27,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@vanilla-pudding/message": "^1.1.0"
+    "@vanilla-pudding/message": "latest"
   },
   "devDependencies": {
     "@types/chrome": "latest",
     "@vanilla-pudding/vite-plugin": "^1.0.0",
-    "alova": "^3.0.4",
     "vite": "^5.3.1"
   }
 }

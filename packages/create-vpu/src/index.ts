@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { blue, red, reset, yellow } from 'kolorist'
 import minimist from 'minimist'
 import prompts from 'prompts'
-import { blue, red, reset, yellow } from 'kolorist'
 
 const argv = minimist<{
   template?: string

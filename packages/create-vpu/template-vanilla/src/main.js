@@ -20,11 +20,11 @@ window.test = {
     console.log('extNamedStore', name)
   },
   async doRequest() {
-    await bgt.doRequest(
+    await bgt.doRequestFy(
       'GET',
       'https://www.alibaba.com/trade/search?tab=supplier&SearchText=dress',
     ).then((res) => {
-      console.log('doRequest', res)
+      console.log('doRequestFy', res)
     })
   },
 }

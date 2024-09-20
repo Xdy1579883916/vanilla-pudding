@@ -1,10 +1,11 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import { transformUserScript } from '@vanilla-pudding/vite-plugin'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  // eslint-disable-next-line no-unused-vars
   const isDev = mode === 'development'
   // 可直接使用网络的ESM的CDN包
   const cdnScripts = {
