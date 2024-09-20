@@ -92,6 +92,18 @@
 </template>
 
 <script setup lang="ts">
+import type { Component } from 'vue'
+import { extI18n } from '@/lib/extI18n.ts'
+import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
+import { getBackgroundToolService } from '@/lib/rpc/backgroundToolRPC.ts'
+import {
+  AddCircle20Regular,
+  CalendarArrowDown20Regular,
+  CalendarArrowRight24Regular,
+  CalendarSync16Regular,
+  Delete16Regular,
+  Javascript16Regular,
+} from '@vicons/fluent'
 import {
   NButton,
   NDropdown,
@@ -104,38 +116,26 @@ import {
   useMessage,
   useModal,
 } from 'naive-ui'
-import type { Component } from 'vue'
 import { computed, h, onMounted, ref } from 'vue'
-import {
-  AddCircle20Regular,
-  CalendarArrowDown20Regular,
-  CalendarArrowRight24Regular,
-  CalendarSync16Regular,
-  Delete16Regular,
-  Javascript16Regular,
-} from '@vicons/fluent'
-import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
-import { getBackgroundToolService } from '@/lib/rpc/backgroundToolRPC.ts'
-import { i18n } from '@/lib/i18n.ts'
 
 const msg = {
-  openSource: i18n.t('openSource'),
-  noSupportTip: i18n.t('noSupportTip'),
-  script_manage: i18n.t('script_manage'),
-  script_create: i18n.t('script_create'),
-  script_create2: i18n.t('script_create2'),
-  script_update: i18n.t('script_update'),
-  export: i18n.t('script_export'),
-  import: i18n.t('script_import'),
-  script_empty: i18n.t('script_empty'),
-  searchFilter: i18n.t('searchFilter'),
-  delete_title: i18n.t('delete_title'),
-  delete_content: i18n.t('delete_content'),
-  delete_negative: i18n.t('delete_negative'),
-  delete_positive: i18n.t('delete_positive'),
-  delete_success: i18n.t('delete_success'),
-  export_tip: i18n.t('export_tip'),
-  export_file: i18n.t('export_file'),
+  openSource: extI18n.t('openSource'),
+  noSupportTip: extI18n.t('noSupportTip'),
+  script_manage: extI18n.t('script_manage'),
+  script_create: extI18n.t('script_create'),
+  script_create2: extI18n.t('script_create2'),
+  script_update: extI18n.t('script_update'),
+  export: extI18n.t('script_export'),
+  import: extI18n.t('script_import'),
+  script_empty: extI18n.t('script_empty'),
+  searchFilter: extI18n.t('searchFilter'),
+  delete_title: extI18n.t('delete_title'),
+  delete_content: extI18n.t('delete_content'),
+  delete_negative: extI18n.t('delete_negative'),
+  delete_positive: extI18n.t('delete_positive'),
+  delete_success: extI18n.t('delete_success'),
+  export_tip: extI18n.t('export_tip'),
+  export_file: extI18n.t('export_file'),
 }
 
 function renderIcon(icon: Component) {
