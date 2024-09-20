@@ -1,8 +1,8 @@
 import { useExt } from '@vanilla-pudding/message'
 
-async function test() {
-  const bgt = useExt().bgt
+const bgt = useExt().bgt
 
+async function test() {
   const hello = await bgt.hello('你好')
   console.log('hello', hello)
 
@@ -16,11 +16,11 @@ async function test() {
   console.log('extNamedStore', name)
 
   // console.log(await bgt.ruleDNRTool.get())
-  await bgt.doRequest(
+  await bgt.doRequestFy(
     'GET',
-    'https://www.alibaba.com/product-detail/2022-New-wholesale-sweet-love-roses_1600382993364.html',
+    'https://www.alibaba.com/trade/search?tab=supplier&SearchText=dress',
   ).then((res) => {
-    console.log('doRequest', res)
+    console.log('doRequestFy', res)
   })
 }
 
@@ -31,35 +31,36 @@ async function test_file_upload() {
 
   // https://www.amazon.com/s?k=SHOP+THE+LOOK&ref=nb_sb_noss
   const url = 'https://www.amazon.com/stylesnap/upload'
-  await useExt().bgt.doRequest(
+  await useExt().bgt.doRequestFy(
     'POST',
     url,
     {
-      params: {
-        stylesnapToken: 'hFPBPF%2BMXgcfUXBPxmZgcO1vooMLFbnEIqH1dQYgSjC9AAAAAGanstMAAAAB',
-      },
-      meta: {
-        content_type: 'formData',
+      body: {
+        'explore-looks.jpg': {
+          uri: blob_url,
+          filename: 'explore-looks.jpg',
+        },
+        'fileFields': [
+          'explore-looks.jpg',
+        ],
+        // or ↓
+        // "explore-looks.jpg": blob_url,
+        // blobFields: [
+        //   "explore-looks.jpg",
+        // ]
       },
     },
     {
-      'explore-looks.jpg': {
-        uri: blob_url,
-        filename: 'explore-looks.jpg',
+      content_type: 'formData',
+      params: {
+        stylesnapToken: 'hEfEmyJn5aUzNDSYmFLSonuTrHLUGFBrfwQDSaN%2BnpIYAAAAAGbttPUAAAAB',
       },
-      'fileFields': [
-        'explore-looks.jpg',
-      ],
-      // or ↓
-      // "explore-looks.jpg": blob_url,
-      // blobFields: [
-      //   "explore-looks.jpg",
-      // ]
     },
   ).then((res) => {
     console.log(res)
   })
 }
 
+window.bgt = bgt
 window.test = test
 window.test_file_upload = test_file_upload
