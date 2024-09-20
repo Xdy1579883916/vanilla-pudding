@@ -115,6 +115,7 @@ import {
   Javascript16Regular,
 } from '@vicons/fluent'
 import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
+import { getBackgroundToolService } from '@/lib/rpc/backgroundToolRPC.ts'
 import { i18n } from '@/lib/i18n.ts'
 
 const msg = {
@@ -155,6 +156,7 @@ const message = useMessage()
 const modal = useModal()
 
 const backgroundScriptService = getBackgroundScriptService()
+const backgroundToolService = getBackgroundToolService()
 
 const list = ref([])
 const support = ref(false)
@@ -248,8 +250,19 @@ async function handleDel(item) {
   }
 }
 
-function getEditorURL(userScriptId: string): string {
-  return chrome.runtime.getURL(`editor.html?id=${userScriptId}`)
+async function getEditorURL(userScriptId: string): Promise<string> {
+  const url = new URL(chrome.runtime.getURL(`editor.html`))
+
+  url.searchParams.append('id', userScriptId)
+
+  const [tab] = (await backgroundToolService.tabsGetActive()) || []
+
+  // If the active tab is a web page, add the URL to the editor URL
+  if (tab && tab.url.startsWith('http')) {
+    url.searchParams.append('match', tab.url)
+  }
+
+  return url.href
 }
 
 async function handleNewScript() {
@@ -349,7 +362,7 @@ async function handleImport() {
 }
 
 async function handleEditScript(id) {
-  const url = getEditorURL(id)
-  chrome.tabs.create({ url })
+  const url = await getEditorURL(id)
+  await chrome.tabs.create({ url })
 }
 </script>

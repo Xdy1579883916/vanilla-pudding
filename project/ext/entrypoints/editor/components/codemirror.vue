@@ -24,7 +24,9 @@ self.MonacoEnvironment = {
   },
 }
 
-const id = new URL(location.href).searchParams.get('id')
+const url = new URL(location.href)
+const id = url.searchParams.get('id')
+const match = url.searchParams.get('match')
 const monacoEditor = ref(null)
 
 // 挂载
@@ -36,6 +38,11 @@ onMounted(async () => {
 
   // 代码
   let code = codeExample
+
+  if (match) {
+    code = codeExample.replace('<all_urls>', match)
+  }
+
   const info = await backgroundScriptService.getUserScript(id)
   // 这是修改脚本
   if (info) {
