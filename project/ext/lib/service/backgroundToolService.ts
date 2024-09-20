@@ -1,6 +1,6 @@
-import { StorageInstance } from '@/lib/storage'
+import { extRequest, extRequestFy } from '@/lib/request'
 import { RuleDNRTool } from '@/lib/rules'
-import { extRequest } from '@/lib/request'
+import { StorageInstance } from '@/lib/storage'
 import { NamedStorageInstance } from '@/lib/storage/NamedStorage'
 
 export class BackgroundToolService {
@@ -11,6 +11,7 @@ export class BackgroundToolService {
   ruleDNRTool: RuleDNRTool
   // 请求 API
   doRequest = extRequest
+  doRequestFy = extRequestFy
 
   constructor() {
     // session sync local 存储库 API

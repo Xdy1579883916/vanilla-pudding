@@ -1,20 +1,11 @@
-import type {
-  AlovaDefaultCacheAdapter,
-  AlovaGenerics,
-  AlovaMethodCreateConfig,
-  MethodType,
-  RequestBody,
-  StatesExport,
-} from 'alova'
-import { Method, createAlova } from 'alova'
-import GlobalFetch from 'alova/fetch'
-import { upperCase } from 'lodash-es'
-import type { BooleanOptional, IStringifyOptions } from 'qs'
-import qs from 'qs'
-
 import type { TWdeCors } from '@/lib/rules'
+import type { BooleanOptional, IStringifyOptions } from 'qs'
+import type { Method } from 'quick-fy'
 import { ruleDNRTool } from '@/lib/rules'
 import { check, getRow, parseJson } from '@/lib/tool.ts'
+import { upperCase } from 'lodash-es'
+import qs from 'qs'
+import { createFy, getContentType } from 'quick-fy'
 
 type ResponseType =
   | 'arraybuffer'
@@ -34,57 +25,83 @@ const ContentTypeMap: Record<ContentType, string> = {
   form: 'application/x-www-form-urlencoded;charset=UTF-8',
   formData: 'multipart/form-data',
 }
-type FetchRequestInit = Omit<RequestInit, 'body' | 'headers' | 'method'>
-const alovaInstance = createAlova({
-  requestAdapter: GlobalFetch(),
-  timeout: 1000 * 60,
-  async beforeRequest(method) {
-    const cors = getRow(method, 'config.meta.cors', null)
+
+type Arg = Record<string, any> | string
+type MethodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH'
+
+const fy = createFy({
+  async beforeRequest(method: Method) {
+    let url = getRow(method, 'url', '')
+    const config = getRow(method, 'config', {})
+    const meta = getRow(method, 'meta', {})
+
+    const cors = getRow(meta, 'cors', null)
     if (cors) {
       await onBeforeSetCors(cors)
     }
-    const content_type: ContentType = getRow(method, 'config.meta.content_type', 'json')
-    const qs_options = getRow(method, 'config.meta.qs_options', {})
-    const set_content_type: ContentType = getRow(method, 'config.meta.set_content_type', true)
+    const content_type: ContentType = getRow(meta, 'content_type', 'json')
+    const qs_options = getRow(meta, 'qs_options', {})
+    const set_content_type: ContentType = getRow(meta, 'set_content_type', true)
+    const params = getRow(meta, 'params', null)
 
     const ContentType = ContentTypeMap[content_type]
 
+    let data = config?.body
+
     // 设置 ContentType
-    function getContentType() {
+    function setContentType() {
       if (!set_content_type)
         return {}
-      if (content_type === 'formData' && check(method.data, 'Object')) {
+      if (content_type === 'formData' && check(data, 'Object')) {
         const field = ['blobFields', 'fileFields']
         // 检查formData是否包含文件字段
-        const hasFile = !!Object.keys(method.data).filter(v => field.includes(v)).length
+        const hasFile = !!Object.keys(data).filter(v => field.includes(v)).length
         if (hasFile)
           return {}
       }
-      return ContentType ? { 'Content-Type': ContentType } : {}
+      return ContentType ? { 'content-type': ContentType } : {}
     }
 
     // 处理请求头
-    method.config.headers = {
-      ...(getContentType()),
-      ...(method.config.headers || {}),
+    config.headers = {
+      ...(setContentType()),
+      ...(config.headers || {}),
     }
 
-    if (method.type !== 'GET') {
+    if (config.method !== 'GET') {
       // 处理流字段
-      await doBlobFields(method.data)
+      await doBlobFields(data)
     }
 
-    method.data = parseDataByContentType(content_type, method.data, qs_options)
+    // 处理body数据
+    data = parseDataByContentType(content_type, data, qs_options)
+
+    // 处理 url params
+    if (params) {
+      const textSearchParams = typeof params === 'string'
+        ? params.replace(/^\?/, '')
+        : qs.stringify(params, { encode: false })
+      const searchParams = `?${textSearchParams}`
+      url = url.replace(/(?:\?.*?)?(?=#|$)/, searchParams)
+    }
+
+    return {
+      url,
+      config: {
+        ...config,
+        body: data,
+      },
+      meta,
+    }
   },
-  // 使用数组的两个项，分别指定请求成功的拦截器和请求失败的拦截器
   responded: {
     // 请求成功的拦截器
     // 当使用GlobalFetch请求适配器时，第一个参数接收Response对象
     // 第二个参数为当前请求的method实例，你可以用它同步请求前后的配置信息
-    onSuccess: async (response, method) => {
-      console.log(method)
-      const def_res_type = method.type === 'POST' ? 'json' : 'text'
-      const response_type: ResponseType = getRow(method, 'config.meta.response_type', def_res_type)
+    onSuccess: async (response, method: Method) => {
+      const methodType = getRow(method, 'config.method', 'GET')
+      const def_res_type = methodType === 'POST' ? 'json' : 'text'
+      const response_type: ResponseType = getRow(method, 'meta.response_type', def_res_type)
       if (response.status >= 200 && response.status !== 204) {
         const contentType = getContentType(response)
         switch (response_type) {
@@ -118,13 +135,15 @@ const alovaInstance = createAlova({
     // 请求失败的拦截器
     // 请求错误时将会进入该拦截器。
     // 第二个参数为当前请求的method实例，你可以用它同步请求前后的配置信息
-    onError: (error, method) => {},
+    onError: (error, method) => {
+      throw error
+    },
 
     // 请求完成的拦截器
     // 当你需要在请求不论是成功、失败、还是命中缓存都需要执行的逻辑时，可以在创建alova实例时指定全局的`onComplete`拦截器，例如关闭请求 loading 状态。
     // 接收当前请求的method实例
     onComplete: async (method) => {
-      const cors = getRow(method, 'config.meta.cors', null)
+      const cors = getRow(method, 'meta.cors', null)
       if (cors) {
         await onEndSetCors(cors)
       }
@@ -154,6 +173,9 @@ function parseDataByContentType(content_type: ContentType, data: any, qs_options
       return formData
     }
     default: {
+      if (check(data, 'Object') || check(data, 'Array')) {
+        return JSON.stringify(data)
+      }
       return data
     }
   }
@@ -203,28 +225,57 @@ interface Meta {
   response_type: ResponseType
   // 设置 qs 的配置
   qs_options: IStringifyOptions<BooleanOptional>
-
+  // 设置请求URL参数
+  params?: Arg
   [k: string]: any
 }
 
-type Config =
-  {
-    meta?: Partial<Meta>
-  }
-  & AlovaMethodCreateConfig<AlovaGenerics<any, any, FetchRequestInit, Response, Headers, AlovaDefaultCacheAdapter, AlovaDefaultCacheAdapter, StatesExport>, any, any>
+type Config = {
+  meta?: Partial<Meta>
+  params?: Arg
+} & Omit<RequestInit, 'body'>
 
+/**
+ * 兼容旧版的请求
+ * @deprecated 后续请使用 extRequestFy 代替
+ */
 export function extRequest(
   type: MethodType,
   url: string,
   config?: Config,
-  data?: RequestBody,
+  data?: BodyInit,
 ) {
   const method = upperCase(type) as MethodType
-  return new Method(method, alovaInstance, url, config, data)
+  const { meta, params, ...other } = config || {}
+  return fy.request(
+    url,
+    {
+      ...(other || {}),
+      method,
+      body: data,
+    },
+    {
+      ...(meta || {}),
+      params,
+    },
+  )
 }
 
-function getContentType(response: Response) {
-  return response.headers.get('content-type') || response.headers.get('Content-Type') || null
+export function extRequestFy(
+  type: MethodType,
+  url: string,
+  config?: RequestInit,
+  meta?: Partial<Meta>,
+) {
+  const method = upperCase(type || 'GET') as MethodType
+  return fy.request(
+    url,
+    {
+      ...(config || {}),
+      method,
+    },
+    meta,
+  )
 }
 
 function charsetMatches(contentType: string, stageOne: Response, dataType) {

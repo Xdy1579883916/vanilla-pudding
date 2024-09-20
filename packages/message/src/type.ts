@@ -1,12 +1,3 @@
-import type {
-  AlovaDefaultCacheAdapter,
-  AlovaGenerics,
-  AlovaMethodCreateConfig,
-  Method,
-  MethodType,
-  RequestBody,
-  StatesExport,
-} from 'alova'
 import type { BooleanOptional, IStringifyOptions } from 'qs'
 
 export declare class NamedStorageInstance {
@@ -105,33 +96,29 @@ export declare class RuleDNRTool {
   rmByHeader(opt: TWdeCors): Promise<void>
 }
 
-type ResponseType =
-  'arraybuffer'
-  | 'blob'
-  | 'document'
-  | 'json'
-  | 'text'
-  | 'stream'
-  | 'formData'
-  | 'base64'
-  | 'charset_encode'
+type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formData' | 'base64' | 'charset_encode'
 type ContentType = 'json' | 'form' | 'formData'
-type FetchRequestInit = Omit<RequestInit, 'body' | 'headers' | 'method'>
+type Arg = Record<string, any> | string
+type MethodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH'
 interface Meta {
   cors: TWdeCors | string
   content_type: ContentType
   set_content_type: boolean
   response_type: ResponseType
   qs_options: IStringifyOptions<BooleanOptional>
+  params?: Arg
   [k: string]: any
 }
-type Config =
-  {
-    meta?: Partial<Meta>
-  }
-  & AlovaMethodCreateConfig<AlovaGenerics<any, any, FetchRequestInit, Response, Headers, AlovaDefaultCacheAdapter, AlovaDefaultCacheAdapter, StatesExport>, any, any>
-
-export declare function extRequest(type: MethodType, url: string, config?: Config, data?: RequestBody): Method<AlovaGenerics<any, any, FetchRequestInit, Response, Headers, AlovaDefaultCacheAdapter, AlovaDefaultCacheAdapter, StatesExport>>
+type Config = {
+  meta?: Partial<Meta>
+  params?: Arg
+} & Omit<RequestInit, 'body'>
+/**
+ * 兼容旧版的请求
+ * @deprecated 后续请使用 extRequestFy 代替
+ */
+export declare function extRequest(type: MethodType, url: string, config?: Config, data?: BodyInit): Promise<any>
+export declare function extRequestFy(type: MethodType, url: string, config?: RequestInit, meta?: Partial<Meta>): Promise<any>
 
 export declare class BackgroundToolService {
   extSessionStore: StorageInstance
@@ -140,6 +127,7 @@ export declare class BackgroundToolService {
   extNamedStore: NamedStorageInstance
   ruleDNRTool: RuleDNRTool
   doRequest: typeof extRequest
+  doRequestFy: typeof extRequestFy
 
   constructor()
 

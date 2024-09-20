@@ -35,10 +35,9 @@
   - [x] NamespaceStorage Based on indexDB, driven by Dexie, provides plugin-level storage capabilities with
     namespaces.
   - [x] RuleDNRTool `chrome.declarativeNetRequest`
-  - [x] Plugin requests, based on `alova`
+  - [x] Plugin requests, based on [quick-fy](https://github.com/Xdy1579883916/quick-fy)
     - Cross-domain requests
     - Modify request headers
-    - Other alova features，Such as: request cache, etc.
     - Use example templates to build user scripts with vite (detailed introduction below).
 
 ## Metadata
@@ -46,32 +45,32 @@
 You need to write metadata in the form of comments at the beginning of the script, refer to the example for the format.
 
 ```ts
-type StrOrStrArr = string | string[];
+type StrOrStrArr = string | string[]
 // 1. Supports camelCase and hyphen style
 // 2. Although the ts type here is mainly for type hints provided by the vite plugin, the naming still conforms to the comment syntax, which is slightly different from the actual values of Google plugins
 interface ScriptMeta {
   // The name of the user script
-  "name": string;
+  'name': string
   // The update URL of the user script, this is optional, when you click the update button, the plugin will access this URL to keep the user script up to date.
   // You can specify multiple update URLs, the plugin will check them in order until a usable user script is found.
-  "update-url"?: StrOrStrArr;
-  "updateUrl"?: StrOrStrArr;
+  'update-url'?: StrOrStrArr
+  'updateUrl'?: StrOrStrArr
   // The following properties come from chrome.userScripts.RegisteredUserScrip, with only slight differences in the property names that support values as StrOrStrArr
-  "world"?: chrome.userScripts.ExecutionWorld;
-  "runAt"?: chrome.userScripts.RunAt;
-  "run-at"?: chrome.userScripts.RunAt;
-  "allFrames"?: boolean;
-  "all-frames"?: boolean;
-  "match"?: StrOrStrArr;
-  "exclude-match"?: StrOrStrArr;
-  "excludeMatch"?: StrOrStrArr;
-  "exclude-glob"?: StrOrStrArr;
-  "excludeGlob"?: StrOrStrArr;
-  "include-glob"?: StrOrStrArr;
-  "includeGlob"?: StrOrStrArr;
+  'world'?: chrome.userScripts.ExecutionWorld
+  'runAt'?: chrome.userScripts.RunAt
+  'run-at'?: chrome.userScripts.RunAt
+  'allFrames'?: boolean
+  'all-frames'?: boolean
+  'match'?: StrOrStrArr
+  'exclude-match'?: StrOrStrArr
+  'excludeMatch'?: StrOrStrArr
+  'exclude-glob'?: StrOrStrArr
+  'excludeGlob'?: StrOrStrArr
+  'include-glob'?: StrOrStrArr
+  'includeGlob'?: StrOrStrArr
   // The method of user script injection, default: esm
-  "run-with"?: "esm" | "raw";
-  "runWith"?: "esm" | "raw";
+  'run-with'?: 'esm' | 'raw'
+  'runWith'?: 'esm' | 'raw'
 }
 ```
 
@@ -82,8 +81,8 @@ interface ScriptMeta {
 // @match https://www.temu.com/*
 // @runAt document_start
 (function () {
-  document.documentElement.setAttribute("translate", "")
-})();
+  document.documentElement.setAttribute('translate', '')
+})()
 ```
 
 ## Example Two ESM Support, from [eternity](https://github.com/BlackGlory/eternity?tab=readme-ov-file#example)
@@ -91,7 +90,7 @@ interface ScriptMeta {
 ```js
 // @name Hello World
 // @match <all_urls>
-import {addStyleSheet} from 'https://esm.sh/userstyle@0.2.1'
+import { addStyleSheet } from 'https://esm.sh/userstyle@0.2.1'
 
 addStyleSheet(`
   *:before {

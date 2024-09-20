@@ -4,7 +4,6 @@
 
 ## 简体中文 | [English](./README_EN.md)
 
-
 ## 名称由来
 
 - JavaScript 又被大家称为 vanilla-js
@@ -29,10 +28,9 @@
   - [x] Storage (`chrome.storage.sync`、`chrome.storage.local`、`chrome.storage.session`) 提供插件级存储能力。
   - [x] NamespaceStorage 基于 indexDB, 由 Dexie 驱动，提供带有命名空间的插件级存储能力。
   - [x] RuleDNRTool `chrome.declarativeNetRequest`
-  - [x] 插件请求, 基于 `alova`
+  - [x] 插件请求, 基于 [quick-fy](https://github.com/Xdy1579883916/quick-fy)
     - 请求跨域
     - 修改请求头
-    - 其他 alova 特性, 如：请求缓存等
     - 使用示例模版，通过 vite 构建用户脚本（此部分下面有详细介绍）。
 
 ## MataData
@@ -40,33 +38,33 @@
 您需要将元数据以注释的形式写在脚本的开头，格式请参考示例。
 
 ```ts
-type StrOrStrArr = string | string[];
+type StrOrStrArr = string | string[]
 
 // 1、支持驼峰和短横线风格
 // 2、虽然这里的ts类型主要是为vite 插件提供类型提示, 但是命名仍然和注释语法保持一致，这与谷歌插件实际值略有出入
 interface ScriptMeta {
   // 用户脚本的名称
-  "name": string;
+  'name': string
   // 用户脚本的更新URL,这是可选的，点击更新按钮，插件将会访问该 URL 以使用户脚本保持最新。
   // 您可以通过多个指定多个更新URL,插件将按顺序逐一检查它们，直到找到可用的用户脚本
-  "update-url"?: StrOrStrArr;
-  "updateUrl"?: StrOrStrArr;
+  'update-url'?: StrOrStrArr
+  'updateUrl'?: StrOrStrArr
   // 下面的属性来自 chrome.userScripts.RegisteredUserScrip, 仅在支持的值为 StrOrStrArr 的属性名上略有出入
-  "world"?: chrome.userScripts.ExecutionWorld;
-  "runAt"?: chrome.userScripts.RunAt;
-  "run-at"?: chrome.userScripts.RunAt;
-  "allFrames"?: boolean;
-  "all-frames"?: boolean;
-  "match"?: StrOrStrArr;
-  "exclude-match"?: StrOrStrArr;
-  "excludeMatch"?: StrOrStrArr;
-  "exclude-glob"?: StrOrStrArr;
-  "excludeGlob"?: StrOrStrArr;
-  "include-glob"?: StrOrStrArr;
-  "includeGlob"?: StrOrStrArr;
+  'world'?: chrome.userScripts.ExecutionWorld
+  'runAt'?: chrome.userScripts.RunAt
+  'run-at'?: chrome.userScripts.RunAt
+  'allFrames'?: boolean
+  'all-frames'?: boolean
+  'match'?: StrOrStrArr
+  'exclude-match'?: StrOrStrArr
+  'excludeMatch'?: StrOrStrArr
+  'exclude-glob'?: StrOrStrArr
+  'excludeGlob'?: StrOrStrArr
+  'include-glob'?: StrOrStrArr
+  'includeGlob'?: StrOrStrArr
   // 用户脚本注入的方式, 默认: esm
-  "run-with"?: "esm" | "raw";
-  "runWith"?: "esm" | "raw";
+  'run-with'?: 'esm' | 'raw'
+  'runWith'?: 'esm' | 'raw'
 }
 ```
 
@@ -77,8 +75,8 @@ interface ScriptMeta {
 // @match https://www.temu.com/*
 // @runAt document_start
 (function () {
-  document.documentElement.setAttribute("translate", "")
-})();
+  document.documentElement.setAttribute('translate', '')
+})()
 ```
 
 ## 案例二 ESM 支持， 来自 [eternity](https://github.com/BlackGlory/eternity?tab=readme-ov-file#example)
@@ -86,7 +84,7 @@ interface ScriptMeta {
 ```js
 // @name Hello World
 // @match <all_urls>
-import {addStyleSheet} from 'https://esm.sh/userstyle@0.2.1'
+import { addStyleSheet } from 'https://esm.sh/userstyle@0.2.1'
 
 addStyleSheet(`
   *:before {

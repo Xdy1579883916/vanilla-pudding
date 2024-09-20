@@ -1,7 +1,7 @@
 {
   "name": "@vanilla-pudding/ext",
   "type": "module",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "private": true,
   "description": "插件",
   "scripts": {

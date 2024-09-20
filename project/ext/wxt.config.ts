@@ -1,7 +1,7 @@
-import type { WxtViteConfig } from 'wxt'
-import { defineConfig } from 'wxt'
-import vue from '@vitejs/plugin-vue'
 import type { UserConfig } from 'vite'
+import type { WxtViteConfig } from 'wxt'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'wxt'
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
