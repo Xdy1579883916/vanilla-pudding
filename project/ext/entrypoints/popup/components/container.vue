@@ -259,8 +259,9 @@ async function getEditorURL(userScriptId: string): Promise<string> {
   const [tab] = (await backgroundToolService.tabsGetActive()) || []
 
   // If the active tab is a web page, add the URL to the editor URL
-  if (tab && tab.url.startsWith('http')) {
-    url.searchParams.append('match', tab.url)
+  const matchURL = String(tab?.url || '')
+  if (matchURL.startsWith('http')) {
+    url.searchParams.append('match', matchURL)
   }
 
   return url.href
