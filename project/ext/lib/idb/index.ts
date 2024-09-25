@@ -26,6 +26,15 @@ class Database extends Dexie {
   }
 }
 
+// 单复数映射
+const metaNamesMap = {
+  matches: 'match',
+  excludeMatches: 'excludeMatch',
+  excludeGlobs: 'excludeGlob',
+  includeGlobs: 'includeGlob',
+  updateURLs: 'updateUrl',
+}
+
 export class ScriptDAO {
   private db: Database
 
@@ -72,17 +81,19 @@ export class ScriptDAO {
   }
 
   async upsertUserScript(id, code) {
+    const newCode = fmtCodeByMeta(code)
+
     await this.db.transaction('rw', this.db.userScripts, async () => {
       const object2 = await this.db.userScripts.get(id)
       if (object2) {
         await this.db.userScripts.update(id, {
-          code,
+          code: newCode,
         })
       }
       else {
         await this.db.userScripts.add({
           id,
-          code,
+          code: newCode,
           enabled: 1,
           /* True */
         })
@@ -101,10 +112,38 @@ function convertUserScriptObjectToUserScript(obj): any {
   }
 }
 
+function fmtCodeByMeta(code) {
+  const meta = parseMetadata(code)
+
+  for (const [metaNamePlural, metaNameSingular] of Object.entries(metaNamesMap)) {
+    meta[metaNameSingular] = meta[metaNamePlural]
+    delete meta[metaNamePlural]
+  }
+  return generateMetaStr(meta) + removeMetaInCode(code)
+}
+
+function removeMetaInCode(code) {
+  return code.replace(/^\/\/\s*@(?<key>\S+)(?<value>.+?$|$)/gm, '').replace(/[\r\n]+/gi, '\n')
+}
+
+function generateMetaStr(scriptMeta) {
+  return Object.entries(scriptMeta).reduce((pre, [k, v]) => {
+    if (Array.isArray(v)) {
+      v.forEach((item) => {
+        pre += `// @${k} ${item}\n`
+      })
+    }
+    else {
+      pre += `// @${k} ${v}\n`
+    }
+    return pre
+  }, '')
+}
+
 export function parseMetadata(code) {
   const opt = {
-    name: null,
-    runAt: null,
+    name: 'new-script',
+    runAt: 'document_idle',
     matches: [],
     excludeMatches: [],
     excludeGlobs: [],
@@ -178,8 +217,7 @@ export function parseMetadata(code) {
   }
 
   // 对数组项去重
-  const arrayItems = ['matches', 'excludeMatches', 'excludeGlobs', 'excludeGlobs', 'updateURLs']
-  for (const item of arrayItems) {
+  for (const item of Object.keys(metaNamesMap)) {
     opt[item] = uniq(opt[item])
   }
 
