@@ -7,12 +7,12 @@
 </template>
 
 <script setup lang="ts">
+import codeExample from '@/entrypoints/editor/lib/code.js?raw'
+import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
 import * as monaco from 'monaco-editor'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
-import { onMounted, ref } from 'vue'
 import { useMessage } from 'naive-ui'
-import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
-import codeExample from '@/entrypoints/editor/lib/code.js?raw'
+import { onMounted, ref } from 'vue'
 
 const message = useMessage()
 const backgroundScriptService = getBackgroundScriptService()

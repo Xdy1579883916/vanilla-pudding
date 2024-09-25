@@ -1,19 +1,15 @@
 <template>
-  <div v-if="support" class="container flex flex-col p-2 space-y-2">
+  <div v-if="support" class="size-full flex flex-col p-2 space-y-2 dark:bg-black">
     <div class="flex space-x-2 justify-between">
       <NButton
         text
         tag="a"
         :href="msg.openSource"
         target="_blank"
-        type="primary"
       >
-        <NImage
-          src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-          alt="GitHub"
-          class="size-6"
-          :preview-disabled="true"
-        />
+        <NIcon :size="22">
+          <Github />
+        </NIcon>
       </NButton>
       <NDropdown
         size="small"
@@ -39,7 +35,7 @@
         size="small"
         clearable
       />
-      <div class="max-h-[320px] overflow-auto border-t">
+      <NScrollbar class="h-[320px] border-t border-gray-200 dark:border-[#767676]">
         <div v-if="!showList.length" class="flex justify-center items-center h-[300px]">
           <NEmpty :description="msg.script_empty">
             <template #extra>
@@ -53,7 +49,7 @@
           v-for="(item, index) in showList"
           v-else
           :key="index"
-          class="flex justify-between items-center border-b border-gray-200 w-full p-1 text-xs"
+          class="flex justify-between items-center border-b border-gray-200 dark:border-[#767676] w-full p-1 text-xs"
         >
           <div class="space-x-3 flex justify-between items-center">
             <NSwitch
@@ -83,7 +79,7 @@
             </NButton>
           </div>
         </div>
-      </div>
+      </NScrollbar>
     </div>
   </div>
   <div v-else class="flex justify-center items-center text-[#f87171]" style="height: 100vh;">
@@ -96,6 +92,9 @@ import type { Component } from 'vue'
 import { i18n } from '#i18n'
 import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
 import { getBackgroundToolService } from '@/lib/rpc/backgroundToolRPC.ts'
+import {
+  Github,
+} from '@vicons/fa'
 import {
   AddCircle20Regular,
   CalendarArrowDown20Regular,
@@ -110,8 +109,8 @@ import {
   NEllipsis,
   NEmpty,
   NIcon,
-  NImage,
   NInput,
+  NScrollbar,
   NSwitch,
   useMessage,
   useModal,
