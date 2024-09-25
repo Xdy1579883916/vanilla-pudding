@@ -128,41 +128,30 @@ export declare class BackgroundToolService {
   ruleDNRTool: RuleDNRTool
   doRequest: typeof extRequest
   doRequestFy: typeof extRequestFy
-
   constructor()
-
   private bindMethods
-
   hello(msg?: string): Promise<string>
-
   download(option: chrome.downloads.DownloadOptions): Promise<number>
-
   cookieGet(option: chrome.cookies.Details): Promise<chrome.cookies.Cookie>
-
   cookieGetAll(option: chrome.cookies.GetAllDetails): Promise<chrome.cookies.Cookie[]>
-
   cookieSet(option: chrome.cookies.SetDetails): Promise<chrome.cookies.Cookie>
-
   cookieRemove(option: chrome.cookies.Details): Promise<chrome.cookies.Details>
-
   cookieGetAllStores(): Promise<chrome.cookies.CookieStore[]>
-
   getURL(path: string): Promise<string>
-
+  windowsGet(windowId: number, queryOptions?: chrome.windows.QueryOptions): Promise<chrome.windows.Window>
+  windowsGetAll(queryOptions?: chrome.windows.QueryOptions): Promise<chrome.windows.Window[]>
+  windowsGetCurrent(queryOptions?: chrome.windows.QueryOptions): Promise<chrome.windows.Window>
+  windowsGetLastFocused(queryOptions?: chrome.windows.QueryOptions): Promise<chrome.windows.Window>
+  windowsCreate(createData: chrome.windows.CreateData): Promise<chrome.windows.Window>
+  windowsUpdate(windowId: number, updateInfo: chrome.windows.UpdateInfo): Promise<chrome.windows.Window>
+  windowsRemove(windowId: number): Promise<void>
   tabsRemove(tabId: number): Promise<void>
-
   tabsQuery(queryInfo: chrome.tabs.QueryInfo): Promise<chrome.tabs.Tab[]>
-
   tabsOpenPageByURL(url: string): Promise<chrome.tabs.Tab>
-
   tabsCreate(createProperties: chrome.tabs.CreateProperties): Promise<chrome.tabs.Tab>
-
-  tabsGetActive(): Promise<chrome.tabs.Tab[]>
-
+  tabsGetActive(currentWin?: boolean): Promise<chrome.tabs.Tab[]>
   tabsGetActiveWindowId(): Promise<number>
-
   tabsCaptureActiveTab(opt: chrome.tabs.CaptureVisibleTabOptions): Promise<string>
-
   tabsUpdate(tabId: number, updateProperties: chrome.tabs.UpdateProperties): Promise<chrome.tabs.Tab>
 }
 

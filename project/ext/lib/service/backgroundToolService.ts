@@ -50,7 +50,7 @@ export class BackgroundToolService {
     return chrome.downloads.download(option)
   }
 
-  // cookie
+  // cookie API
   async cookieGet(option: chrome.cookies.Details) {
     return chrome.cookies.get(option)
   }
@@ -71,12 +71,41 @@ export class BackgroundToolService {
     return chrome.cookies.getAllCookieStores()
   }
 
-  // source
+  // source API
   async getURL(path: string) {
     return chrome.runtime.getURL(path)
   }
 
-  // tab 相关
+  // windows API
+  async windowsGet(windowId: number, queryOptions?: chrome.windows.QueryOptions) {
+    return chrome.windows.get(windowId, queryOptions)
+  }
+
+  async windowsGetAll(queryOptions?: chrome.windows.QueryOptions) {
+    return chrome.windows.getAll(queryOptions)
+  }
+
+  async windowsGetCurrent(queryOptions?: chrome.windows.QueryOptions) {
+    return chrome.windows.getCurrent(queryOptions)
+  }
+
+  async windowsGetLastFocused(queryOptions?: chrome.windows.QueryOptions) {
+    return chrome.windows.getLastFocused(queryOptions)
+  }
+
+  async windowsCreate(createData: chrome.windows.CreateData) {
+    return chrome.windows.create(createData)
+  }
+
+  async windowsUpdate(windowId: number, updateInfo: chrome.windows.UpdateInfo) {
+    return chrome.windows.update(windowId, updateInfo)
+  }
+
+  async windowsRemove(windowId: number) {
+    return chrome.windows.remove(windowId)
+  }
+
+  // tab API
   async tabsRemove(tabId: number) {
     return chrome.tabs.remove(tabId)
   }
@@ -93,8 +122,13 @@ export class BackgroundToolService {
     return chrome.tabs.create(createProperties)
   }
 
-  async tabsGetActive() {
-    return chrome.tabs.query({ active: true })
+  async tabsGetActive(currentWin: boolean = true) {
+    let windowId: number
+    if (currentWin) {
+      const currentWindow = await this.windowsGetLastFocused()
+      windowId = currentWindow.id
+    }
+    return chrome.tabs.query({ active: true, windowId })
   }
 
   async tabsGetActiveWindowId() {
