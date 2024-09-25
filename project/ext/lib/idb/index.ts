@@ -1,7 +1,7 @@
 import type { IndexableType, Table } from 'dexie'
-import { Dexie } from 'dexie'
-import { guid } from '@/util/guid'
 import { isUserScriptsAPIAvailable } from '@/lib/user-script'
+import { guid } from '@/util/guid'
+import { Dexie } from 'dexie'
 
 class Database extends Dexie {
   userScripts: Table<any, IndexableType, any>

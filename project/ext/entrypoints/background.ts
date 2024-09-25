@@ -1,6 +1,6 @@
-import { configureCSP, registerUserScript, unregisterAllUserScripts } from '@/lib/user-script'
-import { registerBackgroundToolService } from '@/lib/rpc/backgroundToolRPC'
 import { registerBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC'
+import { registerBackgroundToolService } from '@/lib/rpc/backgroundToolRPC'
+import { configureCSP, registerUserScript, unregisterAllUserScripts } from '@/lib/user-script'
 
 export default defineBackground(() => {
   // 后台 worker 每5分钟就会休眠，所以定时唤醒一下

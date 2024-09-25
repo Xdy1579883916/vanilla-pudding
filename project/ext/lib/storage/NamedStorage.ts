@@ -1,6 +1,6 @@
+import { check, joinToStr, parseToReg } from '@/lib/tool.ts'
 import Dexie from 'dexie'
 import { first } from 'lodash-es'
-import { check, joinToStr, parseToReg } from '@/lib/tool.ts'
 
 interface StorageItem {
   namespace: string
