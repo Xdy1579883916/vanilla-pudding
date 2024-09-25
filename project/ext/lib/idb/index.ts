@@ -2,6 +2,7 @@ import type { IndexableType, Table } from 'dexie'
 import { isUserScriptsAPIAvailable } from '@/lib/user-script'
 import { guid } from '@/util/guid'
 import { Dexie } from 'dexie'
+import { trim, uniq } from 'lodash-es'
 
 class Database extends Dexie {
   userScripts: Table<any, IndexableType, any>
@@ -100,7 +101,7 @@ function convertUserScriptObjectToUserScript(obj): any {
   }
 }
 
-function parseMetadata(code) {
+export function parseMetadata(code) {
   const opt = {
     name: null,
     runAt: null,
@@ -116,12 +117,12 @@ function parseMetadata(code) {
   for (const { key, value } of parseMetadataLines(code)) {
     switch (key) {
       case 'name': {
-        opt.name = value
+        opt.name = value || 'new-script'
         break
       }
       case 'run-at':
       case 'runAt': {
-        opt.runAt = value
+        opt.runAt = checkMetadata(['document_idle', 'document_end', 'document_start'], value)
         break
       }
       case 'all-frames':
@@ -164,25 +165,29 @@ function parseMetadata(code) {
         break
       }
       case 'world': {
-        opt.world = value
+        opt.world = checkMetadata(['USER_SCRIPT', 'MAIN'], value)
         break
       }
       case 'run-with':
       case 'runWith': {
         // only esm | raw
-        opt.runWith = ['esm', 'raw'].includes(value) ? value : 'esm'
+        opt.runWith = checkMetadata(['esm', 'raw'], value)
         break
       }
     }
   }
 
-  if (opt.name === null)
-    return {}
+  // 对数组项去重
+  const arrayItems = ['matches', 'excludeMatches', 'excludeGlobs', 'excludeGlobs', 'updateURLs']
+  for (const item of arrayItems) {
+    opt[item] = uniq(opt[item])
+  }
+
   return opt
 }
 
-function parseNameValue(value) {
-  return value
+function checkMetadata(rightList, value) {
+  return rightList.includes(value) ? value : rightList[0]
 }
 
 function parseMatchValue(value) {
@@ -215,9 +220,13 @@ function parseUpdateURLValue(value) {
 }
 
 function* parseMetadataLines(code) {
-  const exp = /^\/\/ @(?<key>[\w-]+)[\s^\n]+(?<value>.*?)[\s^\n]*$/gm
+  const exp = /^\/\/\s*@(?<key>\S+)(?<value>.+?$|$)/gm
   for (const { groups } of code.matchAll(exp)) {
     const { key, value } = groups
-    yield { key, value }
+
+    yield {
+      key,
+      value: trim(value),
+    }
   }
 }
