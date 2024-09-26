@@ -1,7 +1,7 @@
 <template>
   <NConfigProvider
     :theme-overrides="themeOverrides"
-    :theme="isDark ? darkTheme : undefined"
+    :theme="theme"
     abstract
     :locale="zhCN"
     :date-locale="dateZhCN"
@@ -17,10 +17,12 @@
 
 <script lang="ts" setup>
 import type { GlobalThemeOverrides } from 'naive-ui'
-import { usePreferredDark } from '@vueuse/core'
-import { darkTheme, dateZhCN, NConfigProvider, NMessageProvider, NModalProvider, zhCN } from 'naive-ui'
+import { darkTheme, dateZhCN, NConfigProvider, NMessageProvider, NModalProvider, useOsTheme, zhCN } from 'naive-ui'
+import { computed } from 'vue'
 
-const isDark = usePreferredDark()
+const osThemeRef = useOsTheme()
+
+const theme = computed(() => (osThemeRef.value === 'dark' ? darkTheme : null))
 
 const themeOverrides: GlobalThemeOverrides = {
   common: {

@@ -20,20 +20,19 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
-    "@vueuse/core": "^11.1.0",
     "@webext-core/proxy-service": "^1.2.0",
     "@wxt-dev/i18n": "^0.1.0",
     "dexie": "^4.0.8",
     "deyu-deps": "^0.0.5",
     "monaco-editor": "^0.52.0",
-    "naive-ui": "^2.39.0",
+    "naive-ui": "^2.40.0",
     "nanoid": "^5.0.7",
     "qs": "^6.13.0",
     "quick-fy": "^0.3.0",
-    "vue": "^3.5.7"
+    "vue": "^3.5.8"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.7.1",
+    "@antfu/eslint-config": "^3.7.2",
     "@types/chrome": "latest",
     "@types/minimist": "^1.2.5",
     "@types/node": "latest",
@@ -43,23 +42,23 @@
     "@vicons/fluent": "^0.12.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.11.0",
+    "eslint": "^9.11.1",
     "lint-staged": "^15.2.10",
     "npm-run-all2": "^6.2.3",
     "postcss": "^8.4.47",
     "rimraf": "^6.0.1",
-    "sass": "^1.79.2",
+    "sass": "^1.79.3",
     "simple-git-hooks": "^2.11.1",
-    "tailwindcss": "^3.4.12",
+    "tailwindcss": "^3.4.13",
     "terser": "^5.33.0",
     "typescript": "^5.6.2",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-vue-components": "^0.27.4",
-    "vite": "^5.4.6",
-    "vite-plugin-dts": "^4.2.1",
+    "vite": "^5.4.8",
+    "vite-plugin-dts": "^4.2.2",
     "vitest": "^2.1.1",
     "vue-tsc": "^2.1.6",
-    "wxt": "^0.19.9"
+    "wxt": "^0.19.10"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
