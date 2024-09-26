@@ -4,30 +4,4 @@
 
 body {
     margin: 0;
-    min-width: 320px;
-    min-height: 400px;
 }
-
-::-webkit-scrollbar {
-    width: 6px;
-}
-
-::-webkit-scrollbar:horizontal {
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    transition: all 0.2s ease-in-out;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
-    background-color: #0003;
-}
-

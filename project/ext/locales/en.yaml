@@ -11,6 +11,7 @@ script:
   update: Update Script
   export: Export Script
   import: Import Script
+  clear: Clear All Script
 searchFilter: Search Filter
 export:
   file: vanilla-pudding-userscript-export
@@ -20,3 +21,6 @@ delete:
   positive: Confirmed
   negative: Forget it
   success: The script has been deleted
+clear:
+  title: Are you sure to clear all scripts ?
+  success: The script has been cleared

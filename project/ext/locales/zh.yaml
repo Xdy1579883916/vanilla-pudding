@@ -11,6 +11,7 @@ script:
   update: 更新
   export: 导出
   import: 导入
+  clear: 清空
 searchFilter: 搜索过滤
 export:
   file: 香草布丁用户脚本导出
@@ -20,3 +21,6 @@ delete:
   positive: 确认
   negative: 算了
   success: 脚本已删除
+clear:
+  title: 确认清空脚本吗?
+  success: 脚本已清空

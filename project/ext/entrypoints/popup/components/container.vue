@@ -1,5 +1,5 @@
 <template>
-  <div v-if="support" class="size-full flex flex-col p-2 space-y-2 dark:bg-black">
+  <div v-if="support" class="size-full flex flex-col p-2 space-y-2 dark:bg-black w-[360px]">
     <div class="flex space-x-2 justify-between">
       <NButton
         text
@@ -17,7 +17,7 @@
         :options="js_options"
         @select="handleSelect"
       >
-        <NButton :loading="uploading" size="small">
+        <NButton :loading="uploading" size="tiny">
           <template #icon>
             <NIcon :size="22">
               <Javascript16Regular />
@@ -35,7 +35,7 @@
         size="small"
         clearable
       />
-      <NScrollbar class="h-[320px] border-t border-gray-200 dark:border-[#767676]">
+      <NScrollbar class="h-[380px] border-t border-gray-200 dark:border-[#767676]">
         <div v-if="!showList.length" class="flex justify-center items-center h-[300px]">
           <NEmpty :description="msg.script_empty">
             <template #extra>
@@ -88,6 +88,9 @@
 </template>
 
 <script setup lang="ts">
+import type {
+  ModalOptions,
+} from 'naive-ui'
 import type { Component } from 'vue'
 import { i18n } from '#i18n'
 import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
@@ -99,6 +102,7 @@ import {
   AddCircle20Regular,
   CalendarArrowDown20Regular,
   CalendarArrowRight24Regular,
+  CalendarCancel16Regular,
   CalendarSync16Regular,
   Delete16Regular,
   Javascript16Regular,
@@ -127,12 +131,15 @@ const msg = {
   script_export: i18n.t('script.export'),
   script_import: i18n.t('script.import'),
   script_empty: i18n.t('script.empty'),
+  script_clear: i18n.t('script.clear'),
   searchFilter: i18n.t('searchFilter'),
   delete_title: i18n.t('delete.title'),
   delete_content: i18n.t('delete.content'),
   delete_negative: i18n.t('delete.negative'),
   delete_positive: i18n.t('delete.positive'),
   delete_success: i18n.t('delete.success'),
+  clear_title: i18n.t('clear.title'),
+  clear_success: i18n.t('clear.success'),
   export_file: i18n.t('export.file'),
 }
 
@@ -188,6 +195,11 @@ const js_options = ref([
     key: 'export',
     icon: renderIcon(CalendarArrowRight24Regular),
   },
+  {
+    label: msg.script_clear,
+    key: 'clear',
+    icon: renderIcon(CalendarCancel16Regular),
+  },
 ])
 function handleSelect(key: string | number) {
   switch (key) {
@@ -203,8 +215,8 @@ function handleSelect(key: string | number) {
     case 'import':
       handleImport()
       break
-    case 'clean':
-      handleImport()
+    case 'clear':
+      handleClear()
       break
   }
 }
@@ -227,17 +239,29 @@ async function handleTriggerEnabled(item) {
   await query()
 }
 
+const baseModalOpt: ModalOptions = {
+  type: 'warning',
+  preset: 'dialog',
+  closable: false,
+  showIcon: false,
+  titleStyle: {
+    fontSize: '14px',
+  },
+  style: {
+    padding: '10px',
+  },
+  content: msg.delete_content,
+  positiveText: msg.delete_positive,
+  negativeText: msg.delete_negative,
+}
+
 async function handleDel(item) {
   const m = modal.create({
     title: msg.delete_title,
-    type: 'warning',
-    preset: 'dialog',
-    content: msg.delete_content,
-    positiveText: msg.delete_positive,
+    ...baseModalOpt,
     onPositiveClick() {
       doDel()
     },
-    negativeText: msg.delete_negative,
     onNegativeClick() {
       m.destroy()
     },
@@ -247,6 +271,25 @@ async function handleDel(item) {
     await backgroundScriptService.removeUserScript(item.id)
     await query()
     message.success(msg.delete_success)
+  }
+}
+
+async function handleClear() {
+  const m = modal.create({
+    title: msg.clear_title,
+    ...baseModalOpt,
+    onPositiveClick() {
+      doDel()
+    },
+    onNegativeClick() {
+      m.destroy()
+    },
+  })
+
+  async function doDel() {
+    await backgroundScriptService.removeAllUserScript()
+    await query()
+    message.success(msg.clear_success)
   }
 }
 
