@@ -4,6 +4,8 @@ export default antfu({
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
+    'no-unused-vars': 'off',
+    'ts/no-unused-expressions': 'off',
     'node/prefer-global/process': 'off',
     'node/handle-callback-err': 'off',
     'unused-imports/no-unused-vars': 'off',
