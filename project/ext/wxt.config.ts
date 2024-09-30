@@ -13,9 +13,7 @@ export default defineConfig({
       vueTemplate: true,
     },
   },
-  experimental: {
-    includeBrowserPolyfill: true,
-  },
+  extensionApi: 'chrome',
   runner: {
     disabled: true,
   },

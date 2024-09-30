@@ -10,17 +10,15 @@
 import codeExample from '@/entrypoints/editor/lib/code.js?raw'
 import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
 import * as monaco from 'monaco-editor'
-import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import { useMessage } from 'naive-ui'
 import { onMounted, ref } from 'vue'
 
 const message = useMessage()
 const backgroundScriptService = getBackgroundScriptService()
-// eslint-disable-next-line no-restricted-globals
 self.MonacoEnvironment = {
   getWorker() {
-    // eslint-disable-next-line new-cap
-    return new tsWorker()
+    return new TsWorker()
   },
 }
 

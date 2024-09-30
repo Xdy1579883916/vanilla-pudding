@@ -6,21 +6,19 @@ export default defineBackground(() => {
   // 后台 worker 每5分钟就会休眠，所以定时唤醒一下
   function keepServiceWorkerAlive() {
     setInterval(async () => {
-      await browser.runtime.getPlatformInfo()
+      await chrome.runtime.getPlatformInfo()
     }, 4e3)
   }
 
-  console.log('Hello background!', { id: browser.runtime.id })
+  console.log('Hello background!', { id: chrome.runtime.id })
   const backgroundScriptService = registerBackgroundScriptService()
   const backgroundToolService = registerBackgroundToolService()
 
-  // eslint-disable-next-line no-restricted-globals
   Object.assign(self, {
     backgroundScriptService,
     backgroundToolService,
   })
 
-  // eslint-disable-next-line no-restricted-globals
   console.log('background - service', self)
 
   const LaunchReason = {

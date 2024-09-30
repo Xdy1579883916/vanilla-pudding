@@ -6,6 +6,7 @@ export default antfu({
     'no-debugger': 'off',
     'no-unused-vars': 'off',
     'ts/no-unused-expressions': 'off',
+    'no-restricted-globals': 'off',
     'node/prefer-global/process': 'off',
     'node/handle-callback-err': 'off',
     'unused-imports/no-unused-vars': 'off',

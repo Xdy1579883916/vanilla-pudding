@@ -55,7 +55,7 @@
     "unplugin-auto-import": "^0.18.3",
     "unplugin-vue-components": "^0.27.4",
     "vite": "^5.4.8",
-    "vite-plugin-dts": "^4.2.2",
+    "vite-plugin-dts": "^4.2.3",
     "vitest": "^2.1.1",
     "vue-tsc": "^2.1.6",
     "wxt": "^0.19.10"
