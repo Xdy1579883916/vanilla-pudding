@@ -82,7 +82,7 @@
       </NScrollbar>
     </div>
   </div>
-  <div v-else class="flex justify-center items-center text-[#f87171]" style="height: 100vh;width:300px;">
+  <div v-else class="flex justify-center items-center text-[#f87171] w-[360px] h-[400px]">
     {{ msg.noSupportTip }}
   </div>
 </template>
