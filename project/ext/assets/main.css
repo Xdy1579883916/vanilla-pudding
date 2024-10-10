@@ -5,3 +5,7 @@
 body {
     margin: 0;
 }
+
+.monaco-editor .margin-view-overlays div[class*='codicon-folding'] {
+  font-size: 18px;
+}
