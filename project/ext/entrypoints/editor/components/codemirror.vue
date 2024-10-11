@@ -1,3 +1,13 @@
+<style>
+body {
+  margin: 0;
+}
+
+.monaco-editor .margin-view-overlays div[class*='codicon-folding'] {
+  font-size: 80%;
+}
+</style>
+
 <template>
   <div
     id="monacoEditor"
@@ -48,32 +58,38 @@ onMounted(async () => {
   }
   const editor = monaco.editor.create(monacoEditor.value, {
     value: code,
-    theme: 'vs-dark', // 主题
+    theme: 'vs-dark',
     language: 'javascript',
     folding: true, // 是否折叠
     foldingHighlight: true, // 折叠等高线
-    foldingStrategy: 'indentation', // 折叠方式  auto | indentation
-    showFoldingControls: 'always', // 是否一直显示折叠 always | mouseover
+    foldingStrategy: 'indentation', // 折叠方式
+    showFoldingControls: 'always', // 是否一直显示折叠
     disableLayerHinting: true, // 等宽优化
     emptySelectionClipboard: false, // 空选择剪切板
     selectionClipboard: false, // 选择剪切板
     automaticLayout: true, // 自动布局
     codeLens: false, // 代码镜头
-    scrollBeyondLastLine: false, // 滚动完最后一行后再滚动一屏幕
+    scrollBeyondLastLine: false, // 滚动完最后一行后再滚动屏幕
     colorDecorators: true, // 颜色装饰器
-    accessibilitySupport: 'off', // 辅助功能支持  "auto" | "off" | "on"
-    lineNumbers: 'on', // 行号 取值： "on" | "off" | "relative" | "interval" | function
-    lineNumbersMinChars: 5, // 行号最小字符   number
-    readOnly: false, // 是否只读  取值 true | false
+    accessibilitySupport: 'auto', // 辅助功能支持
+    lineNumbers: 'on', // 行号
+    lineNumbersMinChars: 5, // 行号最小字符
+    readOnly: false, // 是否只读
     maxTokenizationLineLength: 20000000,
     stopRenderingLineAfter: -1,
-    formatOnPaste: true,
     fontLigatures: true,
-    cursorBlinking: 'smooth',
+    formatOnType: true,
+    autoIndent: 'full',
+    cursorBlinking: 'expand',
     dragAndDrop: true,
     mouseWheelZoom: true,
+    showUnused: true,
     wordWrap: 'on',
     fontSize: 20,
+    tabSize: 2,
+    stickyScroll: {
+      enabled: false,
+    },
   })
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
     message.success('已保存脚本更新~')
