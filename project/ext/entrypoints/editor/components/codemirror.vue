@@ -10,8 +10,7 @@ body {
 
 <template>
   <div
-    id="monacoEditor"
-    ref="monacoEditor"
+    ref="monacoEditorRef"
     style="width: 100vw;height: 100vh; overflow:hidden;"
   />
 </template>
@@ -24,18 +23,26 @@ import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import { useMessage } from 'naive-ui'
 import { onMounted, ref } from 'vue'
 
-const message = useMessage()
-const backgroundScriptService = getBackgroundScriptService()
 self.MonacoEnvironment = {
   getWorker() {
     return new TsWorker()
   },
 }
+document.onkeydown = (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    // 阻止默认事件
+    e.preventDefault()
+  }
+}
+
+const message = useMessage()
+const backgroundScriptService = getBackgroundScriptService()
 
 const url = new URL(location.href)
 const id = url.searchParams.get('id')
 const match = url.searchParams.get('match')
-const monacoEditor = ref(null)
+const monacoEditorRef = ref(null)
+let editorIns: monaco.editor.IStandaloneCodeEditor
 
 // 挂载
 onMounted(async () => {
@@ -56,7 +63,7 @@ onMounted(async () => {
   if (info) {
     code = info.code
   }
-  const editor = monaco.editor.create(monacoEditor.value, {
+  editorIns = monaco.editor.create(monacoEditorRef.value, {
     value: code,
     theme: 'vs-dark',
     language: 'javascript',
@@ -91,18 +98,26 @@ onMounted(async () => {
       enabled: false,
     },
   })
-  editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-    message.success('已保存脚本更新~')
+  editorIns.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, async () => {
     // console.log("editor.value", editor)
-    const val = editor.getValue()
-    backgroundScriptService.upgradeAndRegisterUserScript(id, val)
+    const val = editorIns.getValue()
+    await backgroundScriptService.upgradeAndRegisterUserScript(id, val)
+    const scInfo = await backgroundScriptService.getUserScript(id)
+    setNewCode(scInfo.code)
+    message.success('已保存脚本更新~')
   })
 })
 
-document.onkeydown = (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    // 阻止默认事件
-    e.preventDefault()
-  }
+function setNewCode(newCode: string) {
+  editorIns.pushUndoStop()
+
+  editorIns.executeEdits('change-code', [
+    {
+      range: editorIns.getModel()!.getFullModelRange(),
+      text: newCode,
+    },
+  ])
+
+  editorIns.pushUndoStop()
 }
 </script>
