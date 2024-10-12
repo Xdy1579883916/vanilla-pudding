@@ -12,6 +12,8 @@ script:
   export: 导出
   import: 导入
   clear: 清空
+  failed: 脚本加载失败, 无脚本Id
+  saved: 脚本已保存 ~
 searchFilter: 搜索过滤
 export:
   file: 香草布丁用户脚本导出

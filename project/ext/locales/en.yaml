@@ -12,6 +12,8 @@ script:
   export: Export Script
   import: Import Script
   clear: Clear All Script
+  failed: Script loading failed, no script ID
+  saved: Saved script ~
 searchFilter: Search Filter
 export:
   file: vanilla-pudding-userscript-export

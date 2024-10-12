@@ -16,6 +16,7 @@ body {
 </template>
 
 <script setup lang="ts">
+import { i18n } from '#i18n'
 import codeExample from '@/entrypoints/editor/lib/code.js?raw'
 import { getBackgroundScriptService } from '@/lib/rpc/backgroundScriptRPC.ts'
 import * as monaco from 'monaco-editor'
@@ -47,7 +48,7 @@ let editorIns: monaco.editor.IStandaloneCodeEditor
 // 挂载
 onMounted(async () => {
   if (!id) {
-    message.error('脚本加载失败, 无脚本Id')
+    message.error(i18n.t('script.failed'))
     return
   }
 
@@ -100,11 +101,16 @@ onMounted(async () => {
   })
   editorIns.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, async () => {
     // console.log("editor.value", editor)
-    const val = editorIns.getValue()
-    await backgroundScriptService.upgradeAndRegisterUserScript(id, val)
-    const scInfo = await backgroundScriptService.getUserScript(id)
-    setNewCode(scInfo.code)
-    message.success('已保存脚本更新~')
+    try {
+      const val = editorIns.getValue()
+      await backgroundScriptService.upgradeAndRegisterUserScript(id, val)
+      const scInfo = await backgroundScriptService.getUserScript(id)
+      setNewCode(scInfo.code)
+      message.success(i18n.t('script.saved'))
+    }
+    catch (e) {
+      message.error(e.message)
+    }
   })
 })
 

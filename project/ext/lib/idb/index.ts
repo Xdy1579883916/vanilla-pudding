@@ -221,6 +221,11 @@ export function parseMetadata(code) {
     opt[item] = uniq(opt[item])
   }
 
+  // fix: must specify at least one match
+  if (!opt.matches.length) {
+    opt.matches = ['<all_urls>']
+  }
+
   return opt
 }
 
