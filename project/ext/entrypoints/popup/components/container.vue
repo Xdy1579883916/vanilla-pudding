@@ -395,7 +395,7 @@ async function handleImport() {
         if (!id) {
           id = await backgroundScriptService.generateUserScriptId()
         }
-        await backgroundScriptService.upgradeAndRegisterUserScript(id, script.code)
+        await backgroundScriptService.setUserScript(id, script.code)
       }
       await query()
     })

@@ -103,7 +103,7 @@ onMounted(async () => {
     // console.log("editor.value", editor)
     try {
       const val = editorIns.getValue()
-      await backgroundScriptService.upgradeAndRegisterUserScript(id, val)
+      await backgroundScriptService.setUserScript(id, val)
       const scInfo = await backgroundScriptService.getUserScript(id)
       setNewCode(scInfo.code)
       message.success(i18n.t('script.saved'))
